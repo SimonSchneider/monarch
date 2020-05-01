@@ -13,6 +13,7 @@ function toWeight(weights, x) {
   return {
     strokeWidth: `${parseInt(size, 10)}px`,
     opacity: `${opacity}`,
+    // stroke: "red"
   };
 }
 
@@ -30,9 +31,9 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const update = async () => {
-    console.log("loading");
-    const fromBe = await fetch("/api/v1/curr").then((r) => r.json());
+  const update = async ({ q = "good" } = {}) => {
+    console.log(`loading ${q}`);
+    const fromBe = await fetch(`/api/v1/curr?state=${q}`).then((r) => r.json());
     dispatch({ type: LOAD_CONFIG, payload: fromBe });
   };
 

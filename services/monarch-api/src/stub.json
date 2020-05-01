@@ -1,0 +1,241 @@
+{
+  "topics": [
+    {
+      "name": "latest-winners-service-challenge-winners-repartition",
+      "eventRate": 0.05477293790546803
+    },
+    {
+      "name": "single-round-challenge.payment.retries",
+      "eventRate": 0
+    },
+    {
+      "name": "event.stats.rules.cleanup",
+      "eventRate": 0.002965708989805375
+    },
+    {
+      "name": "latest-winners-service-latest-challenge-winners-changelog",
+      "eventRate": 0.025486561631139944
+    },
+    {
+      "name": "latest-winners.winners-by-type",
+      "eventRate": 0.025486561631139944
+    },
+    {
+      "name": "event.stats.rules",
+      "eventRate": 0.057089898053753474
+    },
+    {
+      "name": "event.stats.updates",
+      "eventRate": 121.19833178869322
+    },
+    {
+      "name": "latest-winners-service-challenge-winners-changelog",
+      "eventRate": 0.0510658016682113
+    },
+    {
+      "name": "latest-winners-service-latest-challenge-winners-repartition",
+      "eventRate": 0.049397590361445774
+    },
+    {
+      "name": "single-round-challenge.payment.requests",
+      "eventRate": 0.07784986098239109
+    },
+    {
+      "name": "timebased-challenge.events",
+      "eventRate": 0.19694161260426318
+    },
+    {
+      "name": "featureTopic",
+      "eventRate": 2041.7400370713622
+    },
+    {
+      "name": "latest-winners.winners-by-challenge",
+      "eventRate": 0.0510658016682113
+    },
+    {
+      "name": "rawPublicGameEvents",
+      "eventRate": 2675.308897126969
+    },
+    {
+      "name": "single-round-challenge.events",
+      "eventRate": 0.27062094531974046
+    }
+  ],
+  "consumerGroups": [],
+  "services": [
+    {
+      "name": "stats",
+      "producesTo": [
+        "event.stats.rules.cleanup",
+        "event.stats.rules",
+        "event.stats.updates"
+      ],
+      "consumerGroups": [
+        {
+          "name": "stats-service-consumer-1",
+          "topics": [
+            {
+              "name": "event.stats.rules.cleanup",
+              "lag": 0
+            },
+            {
+              "name": "featureTopic",
+              "lag": 5428.835185185184
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "gloot-notifications",
+      "producesTo": [],
+      "consumerGroups": [
+        {
+          "name": "gloot-notification-service",
+          "topics": [
+            {
+              "name": "featureTopic",
+              "lag": 1264.975
+            },
+            {
+              "name": "timebased-challenge.events",
+              "lag": 0.21296296296296308
+            },
+            {
+              "name": "single-round-challenge.events",
+              "lag": 0.0175925925925926
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public-game",
+      "producesTo": [
+        "rawPublicGameEvents",
+        "timebased-challenge.events"
+      ],
+      "consumerGroups": []
+    },
+    {
+      "name": "translator",
+      "producesTo": [
+        "featureTopic"
+      ],
+      "consumerGroups": [
+        {
+          "name": "translator-service-consumer",
+          "topics": [
+            {
+              "name": "rawPublicGameEvents",
+              "lag": 2728.6583333333333
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "single-round-challenge",
+      "producesTo": [
+        "single-round-challenge.payment.retries",
+        "single-round-challenge.payment.requests",
+        "single-round-challenge.events"
+      ],
+      "consumerGroups": [
+        {
+          "name": "single-round-challenge-service",
+          "topics": [
+            {
+              "name": "single-round-challenge.payment.requests",
+              "lag": 0.11481481481481488
+            },
+            {
+              "name": "single-round-challenge.payment.retries",
+              "lag": 0
+            },
+            {
+              "name": "event.stats.updates",
+              "lag": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "engagement-leaderboard",
+      "producesTo": [],
+      "consumerGroups": [
+        {
+          "name": "global-leaderboard-service",
+          "topics": [
+            {
+              "name": "event.stats.updates",
+              "lag": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "latest-winners",
+      "producesTo": [
+        "latest-winners-service-challenge-winners-repartition",
+        "latest-winners-service-latest-challenge-winners-changelog",
+        "latest-winners.winners-by-type",
+        "latest-winners-service-challenge-winners-changelog",
+        "latest-winners-service-latest-challenge-winners-repartition",
+        "latest-winners.winners-by-challenge"
+      ],
+      "consumerGroups": [
+        {
+          "name": "latest-winners-service",
+          "topics": [
+            {
+              "name": "latest-winners-service-latest-challenge-winners-repartition",
+              "lag": 0
+            },
+            {
+              "name": "timebased-challenge.events",
+              "lag": 2.936111111111114
+            },
+            {
+              "name": "latest-winners-service-challenge-winners-repartition",
+              "lag": 0.817592592592593
+            },
+            {
+              "name": "single-round-challenge.events",
+              "lag": 4.041666666666665
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bi-middleware",
+      "producesTo": [],
+      "consumerGroups": [
+        {
+          "name": "bi-consumer",
+          "topics": [
+            {
+              "name": "featureTopic",
+              "lag": 9159.656481481486
+            },
+            {
+              "name": "rawPublicGameEvents",
+              "lag": 22082.559259259262
+            },
+            {
+              "name": "event.stats.updates",
+              "lag": 548.5055555555554
+            },
+            {
+              "name": "single-round-challenge.events",
+              "lag": 1.153703703703704
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
