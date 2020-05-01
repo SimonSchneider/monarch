@@ -1,86 +1,86 @@
 {
   "topics": [
     {
-      "name": "event.stats.updates",
+      "name": "event.service-3.update",
       "eventRate": 53.75139664804469
     },
     {
-      "name": "featureTopic",
+      "name": "event.service-2.update",
       "eventRate": 961.9150837988825
     },
     {
-      "name": "latest-winners-service-latest-challenge-winners-repartition",
+      "name": "event.service-5.latest.repartition",
       "eventRate": 0.0446927374301676
     },
     {
-      "name": "latest-winners.winners-by-challenge",
+      "name": "event.service-5.specific",
       "eventRate": 0.04301675977653631
     },
     {
-      "name": "rawPublicGameEvents",
+      "name": "event.service-1.update",
       "eventRate": 1239.5039106145252
     },
     {
-      "name": "single-round-challenge.events",
+      "name": "event.service-4.update",
       "eventRate": 0.17765363128491618
     },
     {
-      "name": "single-round-challenge.payment.retries",
+      "name": "event.service-4.retries",
       "eventRate": 0
     },
     {
-      "name": "event.stats.rules",
+      "name": "event.service-3.rules",
       "eventRate": 0.03631284916201117
     },
     {
-      "name": "latest-winners.winners-by-type",
+      "name": "event.service-5.specific-type",
       "eventRate": 0.02569832402234637
     },
     {
-      "name": "single-round-challenge.payment.requests",
+      "name": "event.service-4.requests",
       "eventRate": 0.058100558659217885
     },
     {
-      "name": "timebased-challenge.events",
+      "name": "event.service-1.domain",
       "eventRate": 0.05027932960893854
     },
     {
-      "name": "latest-winners-service-latest-challenge-winners-changelog",
+      "name": "event.service-5.latest.changelog",
       "eventRate": 0.02569832402234637
     },
     {
-      "name": "latest-winners-service-challenge-winners-changelog",
+      "name": "event.service-5.specific.changelog",
       "eventRate": 0.04301675977653631
     },
     {
-      "name": "event.stats.rules.cleanup",
+      "name": "event.service-3.rules.cleanup",
       "eventRate": 0
     },
     {
-      "name": "latest-winners-service-challenge-winners-repartition",
+      "name": "event.service-5.repartition",
       "eventRate": 0.04804469273743017
     }
   ],
   "consumerGroups": [],
   "services": [
     {
-      "name": "stats",
+      "name": "service-3",
       "producesTo": [
-        "event.stats.updates",
-        "event.stats.rules",
-        "event.stats.rules.cleanup"
+        "event.service-3.update",
+        "event.service-3.rules",
+        "event.service-3.rules.cleanup"
       ],
       "consumerGroups": [
         {
-          "name": "stats-service-consumer-1",
+          "name": "service-1-consumer",
           "topics": [
             {
-              "name": "featureTopic",
+              "name": "event.service-2.update",
               "lag": 2596.1833333333334,
               "rate": 962.0122905027932
             },
             {
-              "name": "event.stats.rules.cleanup",
+              "name": "event.service-3.rules.cleanup",
               "lag": 0,
               "rate": 0
             }
@@ -89,24 +89,24 @@
       ]
     },
     {
-      "name": "gloot-notifications",
+      "name": "service-6",
       "producesTo": [],
       "consumerGroups": [
         {
-          "name": "gloot-notification-service",
+          "name": "service-6-consumer",
           "topics": [
             {
-              "name": "timebased-challenge.events",
+              "name": "event.service-1.domain",
               "lag": 0,
               "rate": 0.05027932960893854
             },
             {
-              "name": "single-round-challenge.events",
+              "name": "event.service-4.update",
               "lag": 0,
               "rate": 0.17765363128491618
             },
             {
-              "name": "featureTopic",
+              "name": "event.service-2.update",
               "lag": 0.8944444444444472,
               "rate": 961.9061452513965
             }
@@ -115,24 +115,24 @@
       ]
     },
     {
-      "name": "public-game",
+      "name": "service-1",
       "producesTo": [
-        "rawPublicGameEvents",
-        "timebased-challenge.events"
+        "event.service-1.update",
+        "event.service-1.domain"
       ],
       "consumerGroups": []
     },
     {
-      "name": "translator",
+      "name": "service-2",
       "producesTo": [
-        "featureTopic"
+        "event.service-2.update"
       ],
       "consumerGroups": [
         {
-          "name": "translator-service-consumer",
+          "name": "service-2-consumer",
           "topics": [
             {
-              "name": "rawPublicGameEvents",
+              "name": "event.service-1.update",
               "lag": 1797.0666666666666,
               "rate": 1239.5385474860334
             }
@@ -141,28 +141,28 @@
       ]
     },
     {
-      "name": "single-round-challenge",
+      "name": "service-4",
       "producesTo": [
-        "single-round-challenge.events",
-        "single-round-challenge.payment.retries",
-        "single-round-challenge.payment.requests"
+        "event.service-4.update",
+        "event.service-4.retries",
+        "event.service-4.requests"
       ],
       "consumerGroups": [
         {
-          "name": "single-round-challenge-service",
+          "name": "service-4-consumer",
           "topics": [
             {
-              "name": "event.stats.updates",
+              "name": "event.service-3.update",
               "lag": 0,
               "rate": 53.75139664804469
             },
             {
-              "name": "single-round-challenge.payment.requests",
+              "name": "event.service-4.retries",
               "lag": 0.038888888888888896,
               "rate": 0.058100558659217885
             },
             {
-              "name": "single-round-challenge.payment.retries",
+              "name": "event.service-4.requests",
               "lag": 0,
               "rate": 0
             }
@@ -171,14 +171,14 @@
       ]
     },
     {
-      "name": "engagement-leaderboard",
+      "name": "service-7",
       "producesTo": [],
       "consumerGroups": [
         {
-          "name": "global-leaderboard-service",
+          "name": "service-7-consumer",
           "topics": [
             {
-              "name": "event.stats.updates",
+              "name": "event.service-3.update",
               "lag": 5.111111111111112,
               "rate": 53.77709497206703
             }
@@ -187,36 +187,36 @@
       ]
     },
     {
-      "name": "latest-winners",
+      "name": "service-5",
       "producesTo": [
-        "latest-winners-service-latest-challenge-winners-repartition",
-        "latest-winners.winners-by-challenge",
-        "latest-winners.winners-by-type",
-        "latest-winners-service-latest-challenge-winners-changelog",
-        "latest-winners-service-challenge-winners-changelog",
-        "latest-winners-service-challenge-winners-repartition"
+        "event.service-5.latest.repartition",
+        "event.service-5.specific",
+        "event.service-5.specific-type",
+        "event.service-5.latest.changelog",
+        "event.service-5.specific.changelog",
+        "event.service-5.repartition"
       ],
       "consumerGroups": [
         {
-          "name": "latest-winners-service",
+          "name": "service-5-consumer",
           "topics": [
             {
-              "name": "latest-winners-service-challenge-winners-repartition",
+              "name": "event.service-5.repartition",
               "lag": 0.8055555555555555,
               "rate": 0.049720670391061456
             },
             {
-              "name": "single-round-challenge.events",
+              "name": "event.service-4.update",
               "lag": 2.872222222222222,
               "rate": 0.18100558659217877
             },
             {
-              "name": "timebased-challenge.events",
+              "name": "event.service-1.domain",
               "lag": 0.7666666666666667,
               "rate": 0.05083798882681564
             },
             {
-              "name": "latest-winners-service-latest-challenge-winners-repartition",
+              "name": "event.service-5.latest.repartition",
               "lag": 0,
               "rate": 0.046927374301675984
             }
@@ -225,29 +225,29 @@
       ]
     },
     {
-      "name": "bi-middleware",
+      "name": "service-8",
       "producesTo": [],
       "consumerGroups": [
         {
-          "name": "bi-consumer",
+          "name": "service-8-consumer",
           "topics": [
             {
-              "name": "rawPublicGameEvents",
-              "lag": 4864.761111111112,
+              "name": "event.service-1.update",
+              "lag": 300000.761111111112,
               "rate": 1239.468715083799
             },
             {
-              "name": "single-round-challenge.events",
+              "name": "event.service-4.update",
               "lag": 0.5277777777777778,
               "rate": 0.17988826815642459
             },
             {
-              "name": "featureTopic",
-              "lag": 80000.5166666666664,
+              "name": "event.service-2.update",
+              "lag": 3689.5166666666664,
               "rate": 961.7033519553073
             },
             {
-              "name": "event.stats.updates",
+              "name": "event.service-3.update",
               "lag": 195.25555555555556,
               "rate": 53.77206703910614
             }
