@@ -153,7 +153,7 @@
           "topics": [
             {
               "name": "event.service-3.update",
-              "lag": 0,
+              "lag": 30000,
               "rate": 53.75139664804469
             },
             {

@@ -3,22 +3,29 @@ import helpers from "./utils";
 import { useSelector } from "react-redux";
 import styles from "./arch.module.css";
 
+function toTopicInfo(cgs) {
+  return cgs.map((cg) => (<div key={cg.consumerGroup + cg.topic}>
+    lagging by { helpers.formatNumber(cg.lag)} events on '{cg.topic}' consuming { helpers.formatNumber(cg.consumptionRate)} events/s
+  </div>));
+}
+
 const Service = ({ name }) => {
   const consumerGroupInfo = useSelector((state) => state.config.consumerGroupInfo.filter((cg) => name === cg.serviceName));
-  const badCgs = consumerGroupInfo
-    .filter((cg) => cg.performance === "CRITICAL" || cg.performance === "WARNING");
-  const style = badCgs.length === 0 ? styles.ok : badCgs.find((cg) => cg.performance === "CRITICAL") ? styles.critical : styles.warning;
+  const critical = consumerGroupInfo
+    .filter((cg) => cg.performance === "CRITICAL");
+  const warning = consumerGroupInfo
+    .filter((cg) => cg.performance === "WARNING");
+  const style = critical.length > 0 ? styles.critical : warning.length > 0 ? styles.warning : styles.ok;
   return (
-    <div key={name} className={`${styles.service} ${style}`}>
+    <div key={name} className={`${styles.service} ${style} ${styles.infoDriver}`}>
       <strong>{name}</strong>
-      {badCgs.map((cg) => {
-        return (
-          <div key={name + cg.consumerGroup + cg.topic}>
-            {cg.topic} - lag {helpers.formatNumber(cg.lag)} - consumption rate {helpers.formatNumber(cg.consumptionRate)}
-          </div>
-        );
-      })}
-    </div>
+      <span>
+        {critical.length > 0 && "Critical"}
+        {toTopicInfo(critical)}
+        {warning.length > 0 && "Warning"}
+        {toTopicInfo(warning)}
+      </span>
+    </div >
   );
 };
 

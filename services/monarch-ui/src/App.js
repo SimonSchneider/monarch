@@ -6,6 +6,7 @@ import Topic from "./Topic";
 import ConsumerGroup from "./ConsumerGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { LOAD_CONFIG } from "./redux/actionTypes";
+import styles from "./arch.module.css";
 
 function getColor(cgInfo) {
   if (!cgInfo) {
@@ -147,6 +148,7 @@ const App = () => {
             measurable: true,
             renderNode: (vertex) => vertex.component,
             setOnNode: {
+              className: styles.hoverable,
               style: {
                 padding: "0.5rem",
               },
