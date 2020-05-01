@@ -9,12 +9,8 @@ const Topic = ({ name } = {}) => {
   );
   return (
     <div className={styles.topic}>
-      <div>
-        <div>
-          <strong>{name}</strong>
-        </div>
-        {helpers.formatNumber(eventRate)} event/s
-      </div>
+      <h1>{name}</h1>
+      {helpers.formatNumber(eventRate)} event/s
     </div>
   );
 };
