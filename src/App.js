@@ -26,6 +26,20 @@ const App = () => {
   const conf = useSelector((state) => state.config.config);
   const weights = useSelector((state) => state.config.weights);
   const topicRates = useSelector((state) => state.config.topicRates);
+  const loaded = useSelector((state) => state.config.loaded);
+
+  const dispatch = useDispatch();
+
+  const update = async () => {
+    console.log("loading");
+    const fromBe = await fetch("/api/v1/curr").then((r) => r.json());
+    dispatch({ type: LOAD_CONFIG, payload: fromBe });
+  };
+
+  if (!loaded) {
+    update();
+    return <div>LOADING STUFF</div>;
+  }
 
   const topics = conf.topics.map((t) => ({
     key: `topic.${t.name}`,
@@ -66,13 +80,6 @@ const App = () => {
   );
 
   const edges = [...producers, ...consumers, ...unmatchedConsumers];
-
-  const dispatch = useDispatch();
-
-  const update = async () => {
-    const fromBe = await fetch("/api/v1/curr").then((r) => r.json());
-    dispatch({ type: LOAD_CONFIG, payload: fromBe });
-  };
 
   return (
     <div

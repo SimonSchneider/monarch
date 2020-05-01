@@ -5,6 +5,7 @@ const initialState = {
   config: initialConfig,
   weights: weights(initialConfig.topics.map((t) => t.eventRate)),
   topicRates: topicRates(initialConfig.topics),
+  loaded: false,
 };
 
 function cmp(extractor) {
@@ -66,10 +67,10 @@ export default function (state = initialState, action) {
       };
       console.log(newConf);
       const newState = {
-        ...state,
         config: newConf,
         weights: weights(newConf.topics.map((t) => t.eventRate)),
         topicRates: topicRates(newConf.topics),
+        loaded: true,
       };
       return newState;
     }
