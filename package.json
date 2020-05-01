@@ -2,10 +2,11 @@
   "name": "kafka-prom-vis",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:9081",
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
-    "@jaegertracing/plexus": "^0.1.0",
+    "@jaegertracing/plexus": "file:../jaeger-ui/packages/plexus",
     "@projectstorm/react-diagrams": "^6.0.1-beta.7",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -18,7 +19,9 @@
     "paths-js": "^0.4.10",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
     "react-scripts": "3.4.1",
+    "redux": "^4.0.5",
     "resize-observer-polyfill": "^1.5.1"
   },
   "scripts": {
