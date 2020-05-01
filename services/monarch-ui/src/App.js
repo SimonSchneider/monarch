@@ -7,13 +7,28 @@ import ConsumerGroup from "./ConsumerGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { LOAD_CONFIG } from "./redux/actionTypes";
 
-function toWeight(weights, x) {
+function getColor(cgInfo) {
+  if (!cgInfo) {
+    return "black";
+  }
+  switch (cgInfo.performance) {
+    case "CRITICAL":
+      return "#ff312e";
+    case "WARNING":
+      return "#ffbc0a";
+    default:
+      return "black"
+  }
+}
+
+function toWeight(weights, x, cgInfo) {
   const size = x * weights.size.scale + weights.size.min;
   const opacity = x * weights.opacity.scale + weights.opacity.min;
+  const color = getColor(cgInfo);
   return {
     strokeWidth: `${parseInt(size, 10)}px`,
     opacity: `${opacity}`,
-    // stroke: "red"
+    stroke: color,
   };
 }
 
@@ -27,12 +42,12 @@ const App = () => {
   const conf = useSelector((state) => state.config.config);
   const weights = useSelector((state) => state.config.weights);
   const topicRates = useSelector((state) => state.config.topicRates);
+  const consumerGroupInfo = useSelector((state) => state.config.consumerGroupInfo);
   const loaded = useSelector((state) => state.config.loaded);
 
   const dispatch = useDispatch();
 
   const update = async ({ state = "good" } = {}) => {
-    console.log(`loading ${state}`);
     const fromBe = await fetch(`/api/v1/curr?state=${state}`).then((r) => r.json());
     dispatch({ type: LOAD_CONFIG, payload: fromBe });
   };
@@ -69,6 +84,7 @@ const App = () => {
         from: `topic.${t.name}`,
         to: `service.${s.name}`,
         topic: t.name,
+        cg: cg.name,
       }))
     )
   );
@@ -77,6 +93,7 @@ const App = () => {
       from: `topic.${t.name}`,
       to: `cg.${cg.name}`,
       topic: t.name,
+      cg: cg.name,
     }))
   );
 
@@ -91,8 +108,10 @@ const App = () => {
         position: "fixed",
       }}
     >
-      <button onClick={update} style={{ zIndex: 10, position: "absolute" }}>refresh</button>
-      <button onClick={() => update({ state: "warn" })} style={{ zIndex: 10, position: "absolute", left: 50 }}>warn</button>
+      <button onClick={() => update({ state: "good" })} style={{ zIndex: 10, position: "absolute" }}>refresh</button>
+      <button onClick={() => update({ state: "warn" })} style={{ zIndex: 10, position: "absolute", left: 80 }}>warn</button>
+      <button onClick={() => update({ state: "crit" })} style={{ zIndex: 10, position: "absolute", left: 160 }}>crit</button>
+      <button onClick={() => update({ state: "real" })} style={{ zIndex: 10, position: "absolute", left: 240 }}>real</button>
       <Digraph
         zoom
         minimap
@@ -117,7 +136,8 @@ const App = () => {
             setOnContainer: scaleProperty.opacity,
             setOnEdge: (l) => {
               const weight = topicRates[l.edge.topic];
-              return toWeight(weights, weight);
+              const cgInfo = consumerGroupInfo.find((cg) => l.edge.cg && l.edge.topic && cg.consumerGroup === l.edge.cg && cg.topic === l.edge.topic);
+              return toWeight(weights, weight, cgInfo);
             },
             markerEndId: "edge-arrow",
           },

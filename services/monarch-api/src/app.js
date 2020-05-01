@@ -34,18 +34,21 @@ async function getTopicList(context) {
 }
 
 async function getConsumerGroups(context) {
-  const [consumerLagResp, consumerRateResp] = await Promise.all([Prom.query(context, conf.consumerGroups.lagQuery), Prom.query(context, conf.consumerGroups.rateQuery)]);
+  const [consumerLagResp, consumerRateResp] = await Promise.all([
+    Prom.query(context, conf.consumerGroups.lagQuery),
+    Prom.query(context, conf.consumerGroups.rateQuery),
+  ]);
   const consumerRates = consumerRateResp.data.result.map((r) => {
     const name = r.metric[conf.consumerGroups.groupKey];
     const topic = r.metric[conf.consumerGroups.topicKey];
-    const rate = r.value[1] >= 0 ? Number(v.value[1]) : 0;
+    const rate = r.value[1] >= 0 ? Number(r.value[1]) : 0;
     return { name, topic, rate };
   });
   return consumerLagResp.data.result.reduce((agg, v) => {
     const name = v.metric[conf.consumerGroups.groupKey];
     const topicName = v.metric[conf.consumerGroups.topicKey];
     const topic = {
-      name: topic,
+      name: topicName,
       lag: v.value[1] >= 0 ? Number(v.value[1]) : 0,
       rate: consumerRates.find((r) => r.name === name && r.topic === topicName).rate,
     };
@@ -147,7 +150,7 @@ app.get(
     if (req.query.state === "warn") {
       res.json(stubWarning);
     }
-    if (req.query.state === "critical") {
+    if (req.query.state === "crit") {
       res.json(stubCritical);
     }
     const [topics, allConsumerGroups] = await Promise.all([

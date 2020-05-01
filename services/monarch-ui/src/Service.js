@@ -4,20 +4,17 @@ import { useSelector } from "react-redux";
 import styles from "./arch.module.css";
 
 const Service = ({ name }) => {
-  const { consumerGroups } = useSelector((state) =>
-    state.config.config.services.find((s) => s.name === name)
-  );
-  const highLagCgs = consumerGroups
-    .flatMap((cg) => cg.topics)
-    .filter((t) => t.lag > 20000);
-  const style = highLagCgs.length === 0 ? styles.ok : styles.warning;
+  const consumerGroupInfo = useSelector((state) => state.config.consumerGroupInfo.filter((cg) => name === cg.serviceName));
+  const badCgs = consumerGroupInfo
+    .filter((cg) => cg.performance === "CRITICAL" || cg.performance === "WARNING");
+  const style = badCgs.length === 0 ? styles.ok : badCgs.find((cg) => cg.performance === "CRITICAL") ? styles.critical : styles.warning;
   return (
     <div key={name} className={`${styles.service} ${style}`}>
       <strong>{name}</strong>
-      {highLagCgs.map((t) => {
+      {badCgs.map((cg) => {
         return (
-          <div key={name + t.name}>
-            {t.name} - {helpers.formatNumber(t.lag)}
+          <div key={name + cg.name}>
+            {cg.topic} - lag {helpers.formatNumber(cg.lag)} - consumption rate {helpers.formatNumber(cg.consumptionRate)}
           </div>
         );
       })}

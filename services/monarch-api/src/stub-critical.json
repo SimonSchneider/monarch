@@ -1,64 +1,64 @@
 {
   "topics": [
     {
-      "name": "latest-winners-service-challenge-winners-repartition",
-      "eventRate": 0.05477293790546803
+      "name": "event.stats.updates",
+      "eventRate": 53.75139664804469
+    },
+    {
+      "name": "featureTopic",
+      "eventRate": 961.9150837988825
+    },
+    {
+      "name": "latest-winners-service-latest-challenge-winners-repartition",
+      "eventRate": 0.0446927374301676
+    },
+    {
+      "name": "latest-winners.winners-by-challenge",
+      "eventRate": 0.04301675977653631
+    },
+    {
+      "name": "rawPublicGameEvents",
+      "eventRate": 1239.5039106145252
+    },
+    {
+      "name": "single-round-challenge.events",
+      "eventRate": 0.17765363128491618
     },
     {
       "name": "single-round-challenge.payment.retries",
       "eventRate": 0
     },
     {
-      "name": "event.stats.rules.cleanup",
-      "eventRate": 0.002965708989805375
-    },
-    {
-      "name": "latest-winners-service-latest-challenge-winners-changelog",
-      "eventRate": 0.025486561631139944
+      "name": "event.stats.rules",
+      "eventRate": 0.03631284916201117
     },
     {
       "name": "latest-winners.winners-by-type",
-      "eventRate": 0.025486561631139944
-    },
-    {
-      "name": "event.stats.rules",
-      "eventRate": 0.057089898053753474
-    },
-    {
-      "name": "event.stats.updates",
-      "eventRate": 121.19833178869322
-    },
-    {
-      "name": "latest-winners-service-challenge-winners-changelog",
-      "eventRate": 0.0510658016682113
-    },
-    {
-      "name": "latest-winners-service-latest-challenge-winners-repartition",
-      "eventRate": 0.049397590361445774
+      "eventRate": 0.02569832402234637
     },
     {
       "name": "single-round-challenge.payment.requests",
-      "eventRate": 0.07784986098239109
+      "eventRate": 0.058100558659217885
     },
     {
       "name": "timebased-challenge.events",
-      "eventRate": 0.19694161260426318
+      "eventRate": 0.05027932960893854
     },
     {
-      "name": "featureTopic",
-      "eventRate": 2041.7400370713622
+      "name": "latest-winners-service-latest-challenge-winners-changelog",
+      "eventRate": 0.02569832402234637
     },
     {
-      "name": "latest-winners.winners-by-challenge",
-      "eventRate": 0.0510658016682113
+      "name": "latest-winners-service-challenge-winners-changelog",
+      "eventRate": 0.04301675977653631
     },
     {
-      "name": "rawPublicGameEvents",
-      "eventRate": 2675.308897126969
+      "name": "event.stats.rules.cleanup",
+      "eventRate": 0
     },
     {
-      "name": "single-round-challenge.events",
-      "eventRate": 0.27062094531974046
+      "name": "latest-winners-service-challenge-winners-repartition",
+      "eventRate": 0.04804469273743017
     }
   ],
   "consumerGroups": [],
@@ -66,21 +66,23 @@
     {
       "name": "stats",
       "producesTo": [
-        "event.stats.rules.cleanup",
+        "event.stats.updates",
         "event.stats.rules",
-        "event.stats.updates"
+        "event.stats.rules.cleanup"
       ],
       "consumerGroups": [
         {
           "name": "stats-service-consumer-1",
           "topics": [
             {
-              "name": "event.stats.rules.cleanup",
-              "lag": 0
+              "name": "featureTopic",
+              "lag": 2596.1833333333334,
+              "rate": 962.0122905027932
             },
             {
-              "name": "featureTopic",
-              "lag": 5428.835185185184
+              "name": "event.stats.rules.cleanup",
+              "lag": 0,
+              "rate": 0
             }
           ]
         }
@@ -94,16 +96,19 @@
           "name": "gloot-notification-service",
           "topics": [
             {
-              "name": "featureTopic",
-              "lag": 1264.975
-            },
-            {
               "name": "timebased-challenge.events",
-              "lag": 0.21296296296296308
+              "lag": 0,
+              "rate": 0.05027932960893854
             },
             {
               "name": "single-round-challenge.events",
-              "lag": 0.0175925925925926
+              "lag": 0,
+              "rate": 0.17765363128491618
+            },
+            {
+              "name": "featureTopic",
+              "lag": 0.8944444444444472,
+              "rate": 961.9061452513965
             }
           ]
         }
@@ -128,7 +133,8 @@
           "topics": [
             {
               "name": "rawPublicGameEvents",
-              "lag": 2728.6583333333333
+              "lag": 1797.0666666666666,
+              "rate": 1239.5385474860334
             }
           ]
         }
@@ -137,25 +143,28 @@
     {
       "name": "single-round-challenge",
       "producesTo": [
+        "single-round-challenge.events",
         "single-round-challenge.payment.retries",
-        "single-round-challenge.payment.requests",
-        "single-round-challenge.events"
+        "single-round-challenge.payment.requests"
       ],
       "consumerGroups": [
         {
           "name": "single-round-challenge-service",
           "topics": [
             {
+              "name": "event.stats.updates",
+              "lag": 0,
+              "rate": 53.75139664804469
+            },
+            {
               "name": "single-round-challenge.payment.requests",
-              "lag": 0.11481481481481488
+              "lag": 0.038888888888888896,
+              "rate": 0.058100558659217885
             },
             {
               "name": "single-round-challenge.payment.retries",
-              "lag": 0
-            },
-            {
-              "name": "event.stats.updates",
-              "lag": 0
+              "lag": 0,
+              "rate": 0
             }
           ]
         }
@@ -170,7 +179,8 @@
           "topics": [
             {
               "name": "event.stats.updates",
-              "lag": 0
+              "lag": 5.111111111111112,
+              "rate": 53.77709497206703
             }
           ]
         }
@@ -179,32 +189,36 @@
     {
       "name": "latest-winners",
       "producesTo": [
-        "latest-winners-service-challenge-winners-repartition",
-        "latest-winners-service-latest-challenge-winners-changelog",
-        "latest-winners.winners-by-type",
-        "latest-winners-service-challenge-winners-changelog",
         "latest-winners-service-latest-challenge-winners-repartition",
-        "latest-winners.winners-by-challenge"
+        "latest-winners.winners-by-challenge",
+        "latest-winners.winners-by-type",
+        "latest-winners-service-latest-challenge-winners-changelog",
+        "latest-winners-service-challenge-winners-changelog",
+        "latest-winners-service-challenge-winners-repartition"
       ],
       "consumerGroups": [
         {
           "name": "latest-winners-service",
           "topics": [
             {
-              "name": "latest-winners-service-latest-challenge-winners-repartition",
-              "lag": 0
-            },
-            {
-              "name": "timebased-challenge.events",
-              "lag": 2.936111111111114
-            },
-            {
               "name": "latest-winners-service-challenge-winners-repartition",
-              "lag": 0.817592592592593
+              "lag": 0.8055555555555555,
+              "rate": 0.049720670391061456
             },
             {
               "name": "single-round-challenge.events",
-              "lag": 4.041666666666665
+              "lag": 2.872222222222222,
+              "rate": 0.18100558659217877
+            },
+            {
+              "name": "timebased-challenge.events",
+              "lag": 0.7666666666666667,
+              "rate": 0.05083798882681564
+            },
+            {
+              "name": "latest-winners-service-latest-challenge-winners-repartition",
+              "lag": 0,
+              "rate": 0.046927374301675984
             }
           ]
         }
@@ -218,20 +232,24 @@
           "name": "bi-consumer",
           "topics": [
             {
-              "name": "featureTopic",
-              "lag": 9159.656481481486
-            },
-            {
               "name": "rawPublicGameEvents",
-              "lag": 22082.559259259262
-            },
-            {
-              "name": "event.stats.updates",
-              "lag": 548.5055555555554
+              "lag": 4864.761111111112,
+              "rate": 1239.468715083799
             },
             {
               "name": "single-round-challenge.events",
-              "lag": 1.153703703703704
+              "lag": 0.5277777777777778,
+              "rate": 0.17988826815642459
+            },
+            {
+              "name": "featureTopic",
+              "lag": 80000.5166666666664,
+              "rate": 10.7033519553073
+            },
+            {
+              "name": "event.stats.updates",
+              "lag": 195.25555555555556,
+              "rate": 53.77206703910614
             }
           ]
         }

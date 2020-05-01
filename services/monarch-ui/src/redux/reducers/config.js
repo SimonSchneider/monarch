@@ -1,10 +1,6 @@
 import { LOAD_CONFIG } from "../actionTypes";
-const initialConfig = require("./conf.json");
 
 const initialState = {
-  config: initialConfig,
-  weights: weights(initialConfig.topics.map((t) => t.eventRate)),
-  topicRates: topicRates(initialConfig.topics),
   loaded: false,
 };
 
@@ -43,15 +39,36 @@ function weights(rates) {
   const [minO, maxO] = [0.5, 1];
   const scaleS = scaleFn(minS, maxS);
   const scaleO = scaleFn(minO, maxO);
-  console.log("scaling is", scaleS, scaleO);
   return {
     size: { scale: scaleS, min: minS },
     opacity: { scale: scaleO, min: minO },
   };
 }
 
-function topicRates(topics) {
+function mapToTopicRates(topics) {
   return topics.reduce((acc, t) => ({ ...acc, [t.name]: t.eventRate }), {});
+}
+
+function consumerGroupPerformance(topicRate, cgRate, cgLag) {
+  if (topicRate >= 1 && cgRate <= 0.1 * topicRate) {
+    return "CRITICAL";
+  }
+  if (cgLag >= 20000) {
+    return "WARNING";
+  }
+  return "OK";
+}
+
+function cgInfo(cgs, topicRates, serviceName) {
+  return cgs.flatMap((cg) => cg.topics.map((t) => ({
+    consumerGroup: cg.name,
+    serviceName,
+    topic: t.name,
+    lag: t.lag,
+    consumptionRate: t.rate,
+    productionRate: topicRates[t.name],
+    performance: consumerGroupPerformance(topicRates[t.name], t.rate, t.lag),
+  })));
 }
 
 export default function (state = initialState, action) {
@@ -65,13 +82,16 @@ export default function (state = initialState, action) {
           consumerGroups: sortConsumerGroups(s.consumerGroups),
         })),
       };
-      console.log(newConf);
+      const topicRates = mapToTopicRates(newConf.topics);
+      const consumerGroupInfo = [...newConf.consumerGroups.map((cg) => cgInfo(cg, topicRates)), ...newConf.services.flatMap((s) => cgInfo(s.consumerGroups, topicRates, s.name))];
       const newState = {
         config: newConf,
         weights: weights(newConf.topics.map((t) => t.eventRate)),
-        topicRates: topicRates(newConf.topics),
+        topicRates,
+        consumerGroupInfo,
         loaded: true,
       };
+      console.log(newState);
       return newState;
     }
     default:
