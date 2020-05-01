@@ -13,7 +13,7 @@ const Service = ({ name }) => {
       <strong>{name}</strong>
       {badCgs.map((cg) => {
         return (
-          <div key={name + cg.name}>
+          <div key={name + cg.consumerGroup + cg.topic}>
             {cg.topic} - lag {helpers.formatNumber(cg.lag)} - consumption rate {helpers.formatNumber(cg.consumptionRate)}
           </div>
         );

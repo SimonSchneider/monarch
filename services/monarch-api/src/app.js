@@ -149,9 +149,11 @@ app.get(
     }
     if (req.query.state === "warn") {
       res.json(stubWarning);
+      return
     }
     if (req.query.state === "crit") {
       res.json(stubCritical);
+      return
     }
     const [topics, allConsumerGroups] = await Promise.all([
       getTopicList(req.context),
