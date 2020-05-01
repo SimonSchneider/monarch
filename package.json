@@ -2,11 +2,11 @@
   "name": "kafka-prom-vis",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:9081",
+  "proxy": "http://192.168.0.230:9081",
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
-    "@jaegertracing/plexus": "file:../jaeger-ui/packages/plexus",
+    "@jaegertracing/plexus": "file:plexus",
     "@projectstorm/react-diagrams": "^6.0.1-beta.7",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
