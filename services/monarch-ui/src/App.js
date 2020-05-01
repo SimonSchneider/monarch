@@ -31,9 +31,9 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const update = async ({ q = "good" } = {}) => {
-    console.log(`loading ${q}`);
-    const fromBe = await fetch(`/api/v1/curr?state=${q}`).then((r) => r.json());
+  const update = async ({ state = "good" } = {}) => {
+    console.log(`loading ${state}`);
+    const fromBe = await fetch(`/api/v1/curr?state=${state}`).then((r) => r.json());
     dispatch({ type: LOAD_CONFIG, payload: fromBe });
   };
 
@@ -91,9 +91,8 @@ const App = () => {
         position: "fixed",
       }}
     >
-      <button onClick={update} style={{ zIndex: 10, position: "absolute" }}>
-        refresh
-      </button>
+      <button onClick={update} style={{ zIndex: 10, position: "absolute" }}>refresh</button>
+      <button onClick={() => update({ state: "warn" })} style={{ zIndex: 10, position: "absolute", left: 50 }}>warn</button>
       <Digraph
         zoom
         minimap

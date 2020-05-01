@@ -223,7 +223,7 @@
             },
             {
               "name": "rawPublicGameEvents",
-              "lag": 10000.559259259262
+              "lag": 22082.559259259262
             },
             {
               "name": "event.stats.updates",
