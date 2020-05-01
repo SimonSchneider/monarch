@@ -28,4 +28,3 @@ else can be manually configured.
     - Prometheus as the source for metrics
   - future
     - automatic topology via tracing
-
