@@ -1,0 +1,38 @@
+
+.grid {
+  display: grid;
+  grid-template-columns: 40px auto;
+  grid-auto-rows: auto; 
+  height: 100vh;
+}
+
+.sidebar {
+  overflow: hidden;
+  background-color: lightgray;
+  z-index: 10000;
+  padding: 5px;
+  align-content: center;
+}
+
+.sidebarIcon {
+  font-size: 30px !important;
+  color: black;
+}
+
+.bottomIcons {
+  position: fixed;
+  width: min-content;
+  bottom: 0;
+}
+
+.contentWrapper {
+  grid-column-start: 2;
+}
+
+.content {
+  width: 100%;
+  width: calc(100vw - 40px);
+  height: 99vh;
+  overflow: hidden;
+  position: fixed;
+}

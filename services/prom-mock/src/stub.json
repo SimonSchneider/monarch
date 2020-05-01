@@ -1,0 +1,224 @@
+{
+  "topics": [
+    {
+      "name": "event.service-3.update",
+      "rate": 53.75139664804469
+    },
+    {
+      "name": "event.service-2.update",
+      "rate": 961.9150837988825
+    },
+    {
+      "name": "event.service-5.latest.repartition",
+      "rate": 0.0446927374301676
+    },
+    {
+      "name": "event.service-5.specific",
+      "rate": 0.04301675977653631
+    },
+    {
+      "name": "event.service-1.update",
+      "rate": 1239.5039106145252
+    },
+    {
+      "name": "event.service-4.update",
+      "rate": 0.17765363128491618
+    },
+    {
+      "name": "event.service-4.retries",
+      "rate": 0
+    },
+    {
+      "name": "event.service-3.rules",
+      "rate": 0.03631284916201117
+    },
+    {
+      "name": "event.service-5.specific-type",
+      "rate": 0.02569832402234637
+    },
+    {
+      "name": "event.service-4.requests",
+      "rate": 0.058100558659217885
+    },
+    {
+      "name": "event.service-1.domain",
+      "rate": 0.05027932960893854
+    },
+    {
+      "name": "event.service-5.latest.changelog",
+      "rate": 0.02569832402234637
+    },
+    {
+      "name": "event.service-5.specific.changelog",
+      "rate": 0.04301675977653631
+    },
+    {
+      "name": "event.service-3.rules.cleanup",
+      "rate": 0
+    },
+    {
+      "name": "event.service-5.repartition",
+      "rate": 0.04804469273743017
+    }
+  ],
+  "consumerGroups": [
+    {
+      "name": "service-1-consumer",
+      "topics": [
+        {
+          "name": "event.service-2.update",
+          "lag": 2596.1833333333334,
+          "rate": 962.0122905027932
+        },
+        {
+          "name": "event.service-3.rules.cleanup",
+          "lag": 0,
+          "rate": 0
+        }
+      ]
+    },
+    {
+      "name": "service-6-consumer",
+      "topics": [
+        {
+          "name": "event.service-1.domain",
+          "lag": 0,
+          "rate": 0.05027932960893854
+        },
+        {
+          "name": "event.service-4.update",
+          "lag": 0,
+          "rate": 0.17765363128491618
+        },
+        {
+          "name": "event.service-2.update",
+          "lag": 0.8944444444444472,
+          "rate": 961.9061452513965
+        }
+      ]
+    },
+    {
+      "name": "service-2-consumer",
+      "topics": [
+        {
+          "name": "event.service-1.update",
+          "lag": 1797.0666666666666,
+          "rate": 1239.5385474860334
+        }
+      ]
+    },
+    {
+      "name": "service-4-consumer",
+      "topics": [
+        {
+          "name": "event.service-3.update",
+          "lag": 0,
+          "rate": 53.75139664804469
+        },
+        {
+          "name": "event.service-4.retries",
+          "lag": 0.038888888888888896,
+          "rate": 0.058100558659217885
+        },
+        {
+          "name": "event.service-4.requests",
+          "lag": 0,
+          "rate": 0
+        }
+      ]
+    },
+    {
+      "name": "service-7-consumer",
+      "topics": [
+        {
+          "name": "event.service-3.update",
+          "lag": 5.111111111111112,
+          "rate": 53.77709497206703
+        }
+      ]
+    },
+    {
+      "name": "service-5-consumer",
+      "topics": [
+        {
+          "name": "event.service-5.repartition",
+          "lag": 0.8055555555555555,
+          "rate": 0.049720670391061456
+        },
+        {
+          "name": "event.service-4.update",
+          "lag": 2.872222222222222,
+          "rate": 0.18100558659217877
+        },
+        {
+          "name": "event.service-1.domain",
+          "lag": 0.7666666666666667,
+          "rate": 0.05083798882681564
+        },
+        {
+          "name": "event.service-5.latest.repartition",
+          "lag": 0,
+          "rate": 0.046927374301675984
+        }
+      ]
+    },
+    {
+      "name": "service-8-consumer",
+      "topics": [
+        {
+          "name": "event.service-1.update",
+          "lag": 4864.761111111112,
+          "rate": 1239.468715083799
+        },
+        {
+          "name": "event.service-4.update",
+          "lag": 0.5277777777777778,
+          "rate": 0.17988826815642459
+        },
+        {
+          "name": "event.service-2.update",
+          "lag": 3689.5166666666664,
+          "rate": 961.7033519553073
+        },
+        {
+          "name": "event.service-3.update",
+          "lag": 195.25555555555556,
+          "rate": 53.77206703910614
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "name": "service-3",
+      "metrics": {
+        "requests": {
+          "rate": 102.0,
+          "errors": 0.0,
+          "duration": 0.2
+        }
+      }
+    },
+    {
+      "name": "service-6"
+    },
+    {
+      "name": "service-1"
+    },
+    {
+      "name": "service-2"
+    },
+    {
+      "name": "service-4"
+    },
+    {
+      "name": "service-7"
+    },
+    {
+      "name": "service-5"
+    },
+    {
+      "name": "service-8"
+    }
+  ]
+}
