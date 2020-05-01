@@ -18,7 +18,7 @@ const ConsumerGroup = ({ name }) => {
       <strong>{name}</strong>
       {topics.map((t) => {
         return (
-          <div>
+          <div key={name + t.name}>
             {t.name} - {helpers.formatNumber(t.lag)}
           </div>
         );

@@ -13,7 +13,7 @@ const Topic = ({ name } = {}) => {
         <div>
           <strong>{name}</strong>
         </div>
-        {helpers.formatNumber(eventRate)} eps
+        {helpers.formatNumber(eventRate)} event/s
       </div>
     </div>
   );

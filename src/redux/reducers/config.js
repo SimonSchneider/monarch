@@ -1,13 +1,11 @@
 import { LOAD_CONFIG } from "../actionTypes";
-const initialConfig = require("../../conf2.json");
-
-console.log("initial config", initialConfig);
+const initialConfig = require("./conf.json");
 
 const initialState = {
   config: initialConfig,
+  weights: weights(initialConfig.topics.map((t) => t.eventRate)),
+  topicRates: topicRates(initialConfig.topics),
 };
-
-console.log("initial state", initialState);
 
 function cmp(extractor) {
   return (a, b) => {
@@ -29,6 +27,32 @@ const sortConsumerGroups = (cgs) => {
     .map((c) => ({ ...c, topics: c.topics.sort(cmp((t) => t.name)) }));
 };
 
+function toScaleFn(rates) {
+  const arr = rates.slice().sort((a, b) => a - b);
+  const minRate = arr[0];
+  const maxRate = arr[arr.length - 1];
+  return (min, max) => {
+    return (max - min) / (maxRate - minRate);
+  };
+}
+
+function weights(rates) {
+  const scaleFn = toScaleFn(rates);
+  const [minS, maxS] = [1, 3];
+  const [minO, maxO] = [0.5, 1];
+  const scaleS = scaleFn(minS, maxS);
+  const scaleO = scaleFn(minO, maxO);
+  console.log("scaling is", scaleS, scaleO);
+  return {
+    size: { scale: scaleS, min: minS },
+    opacity: { scale: scaleO, min: minO },
+  };
+}
+
+function topicRates(topics) {
+  return topics.reduce((acc, t) => ({ ...acc, [t.name]: t.eventRate }), {});
+}
+
 export default function (state = initialState, action) {
   switch (action.type) {
     case LOAD_CONFIG: {
@@ -44,6 +68,8 @@ export default function (state = initialState, action) {
       const newState = {
         ...state,
         config: newConf,
+        weights: weights(newConf.topics.map((t) => t.eventRate)),
+        topicRates: topicRates(newConf.topics),
       };
       return newState;
     }

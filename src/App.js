@@ -4,37 +4,29 @@ import { scaleProperty } from "@jaegertracing/plexus/lib/Digraph/props-factories
 import Service from "./Service";
 import Topic from "./Topic";
 import ConsumerGroup from "./ConsumerGroup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LOAD_CONFIG } from "./redux/actionTypes";
 
-const conf = require("./conf2.json");
-
-function toScaleFn(rates) {
-  const arr = rates.slice().sort((a, b) => a - b);
-  const minRate = arr[0];
-  const maxRate = arr[arr.length - 1];
-  return (min, max) => {
-    return (max - min) / (maxRate - minRate);
+function toWeight(weights, x) {
+  const size = x * weights.size.scale + weights.size.min;
+  const opacity = x * weights.opacity.scale + weights.opacity.min;
+  return {
+    strokeWidth: `${parseInt(size, 10)}px`,
+    opacity: `${opacity}`,
   };
 }
 
-function toWeightFn(rates) {
-  const scaleFn = toScaleFn(rates);
-  const [minS, maxS] = [1, 3];
-  const [minO, maxO] = [0.5, 1];
-  const scaleS = scaleFn(minS, maxS);
-  const scaleO = scaleFn(minO, maxO);
-  return (x) => {
-    const size = x * scaleS + minS;
-    const opacity = x * scaleO + minO;
-    return {
-      strokeWidth: `${parseInt(size, 10)}px`,
-      opacity: `${opacity}`,
-    };
-  };
-}
+const lm = new LayoutManager({
+  useDotEdges: true,
+  rankdir: "TB",
+  ranksep: 2,
+});
 
 const App = () => {
+  const conf = useSelector((state) => state.config.config);
+  const weights = useSelector((state) => state.config.weights);
+  const topicRates = useSelector((state) => state.config.topicRates);
+
   const topics = conf.topics.map((t) => ({
     key: `topic.${t.name}`,
     component: <Topic name={t.name} />,
@@ -53,7 +45,7 @@ const App = () => {
     s.producesTo.map((t) => ({
       from: `service.${s.name}`,
       to: `topic.${t}`,
-      weight: conf.topics.find((k) => k.name === t).eventRate,
+      topic: t,
     }))
   );
   const consumers = conf.services.flatMap((s) =>
@@ -61,7 +53,7 @@ const App = () => {
       cg.topics.map((t) => ({
         from: `topic.${t.name}`,
         to: `service.${s.name}`,
-        weight: conf.topics.find((k) => k.name === t.name).eventRate,
+        topic: t.name,
       }))
     )
   );
@@ -69,21 +61,13 @@ const App = () => {
     cg.topics.map((t) => ({
       from: `topic.${t.name}`,
       to: `cg.${cg.name}`,
-      weight: conf.topics.find((k) => k.name === t.name).eventRate,
+      topic: t.name,
     }))
   );
 
   const edges = [...producers, ...consumers, ...unmatchedConsumers];
 
-  const lm = new LayoutManager({
-    useDotEdges: true,
-    rankdir: "TB",
-    ranksep: 2,
-  });
-
   const dispatch = useDispatch();
-
-  const toWeight = toWeightFn(conf.topics.map((t) => t.eventRate));
 
   const update = async () => {
     const fromBe = await fetch("/api/v1/curr").then((r) => r.json());
@@ -125,7 +109,8 @@ const App = () => {
             ],
             setOnContainer: scaleProperty.opacity,
             setOnEdge: (l) => {
-              return toWeight(l.edge.weight);
+              const weight = topicRates[l.edge.topic];
+              return toWeight(weights, weight);
             },
             markerEndId: "edge-arrow",
           },
