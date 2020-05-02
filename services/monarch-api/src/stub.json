@@ -70,6 +70,13 @@
         "event.service-3.rules",
         "event.service-3.rules.cleanup"
       ],
+      "metrics": {
+        "requests": {
+          "rate": 102.0,
+          "errors": 0.0,
+          "duration": 0.2
+        }
+      },
       "consumerGroups": [
         {
           "name": "service-1-consumer",

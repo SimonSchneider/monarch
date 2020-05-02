@@ -1,63 +1,52 @@
 {
   "topics": {
-    "query": "sum(rate(kafka_topic_partition_current_offset{topic!~\"__.*\"}[30m])) by (topic)",
+    "query": "sum(rate(kafka_topic_partition_current_offset{topic!~\"__.*\"}[1h] offset 15h)) by (topic)",
     "key": "topic"
   },
   "consumerGroups": {
-    "lagQuery": "sum(avg_over_time(kafka_consumergroup_lag{consumergroup!~\"ignored.*\", topic!~\"__.*\"}[30m])) by (topic, consumergroup)",
-    "rateQuery": "sum(rate(kafka_consumergroup_current_offset{consumergroup!~\"ignored.*\", topic!~\"__.*\"}[30m])) by (topic, consumergroup)",
+    "lagQuery": "sum(avg_over_time(kafka_consumergroup_lag{consumergroup!~\"ignored.*\", topic!~\"__.*\"}[1h] offset 15h)) by (topic, consumergroup)",
+    "rateQuery": "sum(rate(kafka_consumergroup_current_offset{consumergroup!~\"ignored.*\", topic!~\"__.*\"}[1h] offset 15h)) by (topic, consumergroup)",
     "topicKey": "topic",
     "groupKey": "consumergroup"
   },
+  "metrics": {
+    "requests": {
+      "rateQuery": "sum(rate(http_server_requests_seconds_count[1h] offset 14h)) by (service)",
+      "errorQuery": "60*sum(rate(http_server_requests_seconds_count{status=~\"5.*\"}[1h] offset 14h)) by (service)",
+      "durationQuery": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket[1h] offset 14h)) by (service,le))",
+      "serviceKey": "service"
+    }
+  },
   "services": {
-    "stats": {
+    "stats-service": {
       "producerRegex": "event.stats.*",
-      "consumerGroups": [
-        "stats-service-consumer-1"
-      ]
+      "consumerGroups": ["stats-service-consumer-1"]
     },
-    "gloot-notifications": {
+    "gloot-notification-service": {
       "producer": [],
-      "consumerGroups": [
-        "gloot-notification-service"
-      ]
+      "consumerGroups": ["gloot-notification-service"]
     },
-    "public-game": {
-      "producer": [
-        "rawPublicGameEvents",
-        "timebased-challenge.events"
-      ],
+    "public-game-service": {
+      "producer": ["rawPublicGameEvents", "timebased-challenge.events"],
       "consumerGroups": []
     },
-    "translator": {
-      "producer": [
-        "featureTopic"
-      ],
-      "consumerGroups": [
-        "translator-service-consumer"
-      ]
+    "translator-service": {
+      "producer": ["featureTopic"],
+      "consumerGroups": ["translator-service-consumer"]
     },
-    "single-round-challenge": {
+    "single-round-challenge-service": {
       "producerRegex": "single-round-challenge.*",
-      "consumerGroups": [
-        "single-round-challenge-service"
-      ]
+      "consumerGroups": ["single-round-challenge-service"]
     },
-    "engagement-leaderboard": {
-      "consumerGroups": [
-        "global-leaderboard-service"
-      ]
+    "global-leaderboard-service": {
+      "consumerGroups": ["global-leaderboard-service"]
     },
-    "latest-winners": {
+    "latest-winners-service": {
       "producerRegex": "latest-winners.*",
-      "consumerGroups": [
-        "latest-winners-service"
-      ]
+      "consumerGroups": ["latest-winners-service"]
     },
     "bi-middleware": {
-      "consumerGroups": [
-        "bi-consumer"
-      ]
+      "consumerGroups": ["bi-consumer"]
     }
   }
 }
