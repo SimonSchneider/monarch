@@ -50,7 +50,8 @@ async function getConsumerGroups(context) {
     const topic = {
       name: topicName,
       lag: v.value[1] >= 0 ? Number(v.value[1]) : 0,
-      rate: consumerRates.find((r) => r.name === name && r.topic === topicName).rate,
+      rate: consumerRates.find((r) => r.name === name && r.topic === topicName)
+        .rate,
     };
     const { topics, ...extra } = agg.find((c) => c.name === name) || {
       name,
@@ -66,8 +67,23 @@ async function getConsumerGroups(context) {
   }, []);
 }
 
+function promToMap(promResp, key) {
+  return promResp.data.result.reduce((agg, r) => {
+    const val = r.metric[key];
+    return {
+      ...agg,
+      [val]: r.value[1],
+    };
+  }, {});
+}
+
 async function getServiceList(context, topics, consumerGroups) {
-  const { services } = conf;
+  const { metrics, services } = conf;
+  const [rateRes, errorRes, durationRes] = await Promise.all([
+    Prom.query(context, metrics.requests.rateQuery),
+    Prom.query(context, metrics.requests.errorQuery),
+    Prom.query(context, metrics.requests.durationQuery),
+  ]).then((rs) => rs.map((r) => promToMap(r, metrics.requests.serviceKey)));
   return Object.keys(services).map((name) => {
     const serviceCgs = services[name].consumerGroups.flatMap((c) =>
       consumerGroups.filter((cg) => cg.name === c)
@@ -76,12 +92,19 @@ async function getServiceList(context, topics, consumerGroups) {
       ...(services[name].producer ? services[name].producer : []),
       ...(services[name].producerRegex
         ? topics
-          .map((t) => t.name)
-          .filter((t) => t.match(services[name].producerRegex))
+            .map((t) => t.name)
+            .filter((t) => t.match(services[name].producerRegex))
         : []),
     ];
     return {
       name,
+      metrics: {
+        requests: {
+          rate: rateRes[name],
+          errors: errorRes[name],
+          duration: durationRes[name],
+        },
+      },
       producesTo: producer,
       consumerGroups: serviceCgs,
     };
@@ -149,11 +172,11 @@ app.get(
     }
     if (req.query.state === "warn") {
       res.json(stubWarning);
-      return
+      return;
     }
     if (req.query.state === "crit") {
       res.json(stubCritical);
-      return
+      return;
     }
     const [topics, allConsumerGroups] = await Promise.all([
       getTopicList(req.context),

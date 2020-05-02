@@ -9,14 +9,18 @@ function toTopicInfo(cgs) {
   </div>));
 }
 
+function hasMetrics(metrics) {
+  return metrics && metrics.requests && (metrics.requests.rate || metrics.requests.errors || metrics.requests.duration);
+}
+
 function formatMetrics(metrics) {
-return (
-  <div>
-    <div>rate: {metrics.requests.rate} r/s</div>
-    <div>errors: {metrics.requests.errors} /minute</div>
-    <div>duration: {metrics.requests.duration} s (p99)</div> 
-  </div>
-);
+  return (
+    <div>
+      <div>rate: {helpers.formatNumber(metrics.requests.rate)} r/s</div>
+      <div>errors: {helpers.formatNumber(metrics.requests.errors)} /minute</div>
+      <div>duration: {helpers.formatNumber(metrics.requests.duration)} s (p99)</div> 
+    </div>
+  );
 }
 
 const Service = ({ name }) => {
@@ -35,8 +39,8 @@ const Service = ({ name }) => {
         {toTopicInfo(critical)}
         {warning.length > 0 && (<h2>Warning</h2>)}
         {toTopicInfo(warning)}
-        {service.metrics && (<h2>Info</h2>)}
-        {service.metrics && formatMetrics(service.metrics)}
+        {hasMetrics(service.metrics) && (<h2>Info</h2>)}
+        {hasMetrics(service.metrics) && formatMetrics(service.metrics)}
       </span>
     </div >
   );
