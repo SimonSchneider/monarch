@@ -30,6 +30,7 @@ function toWeight(weights, x, cgInfo) {
     strokeWidth: `${parseInt(size, 10)}px`,
     opacity: `${opacity}`,
     stroke: color,
+    strokeLinecap: "round",
   };
 }
 
@@ -97,8 +98,15 @@ const App = () => {
       cg: cg.name,
     }))
   );
+  const requests = conf.services.flatMap((ss) =>
+    ss.requestsFrom.flatMap((st) =>
+      ({
+        from: `service.${ss.name}`,
+        to: `service.${st}`
+      })
+    ));
 
-  const edges = [...producers, ...consumers, ...unmatchedConsumers];
+  const edges = [...producers, ...consumers, ...unmatchedConsumers, ...requests];
 
   return (
     <div
@@ -136,6 +144,9 @@ const App = () => {
             ],
             setOnContainer: scaleProperty.opacity,
             setOnEdge: (l) => {
+              if (!l.edge.topic) {
+                return { strokeDasharray: "5,5" };
+              }
               const weight = topicRates[l.edge.topic];
               const cgInfo = consumerGroupInfo.find((cg) => l.edge.cg && l.edge.topic && cg.consumerGroup === l.edge.cg && cg.topic === l.edge.topic);
               return toWeight(weights, weight, cgInfo);

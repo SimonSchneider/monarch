@@ -70,6 +70,7 @@
         "event.service-3.rules",
         "event.service-3.rules.cleanup"
       ],
+      "requestsFrom": [],
       "consumerGroups": [
         {
           "name": "service-1-consumer",
@@ -91,6 +92,7 @@
     {
       "name": "service-6",
       "producesTo": [],
+      "requestsFrom": [],
       "consumerGroups": [
         {
           "name": "service-6-consumer",
@@ -120,6 +122,7 @@
         "event.service-1.update",
         "event.service-1.domain"
       ],
+      "requestsFrom": [],
       "consumerGroups": []
     },
     {
@@ -127,6 +130,7 @@
       "producesTo": [
         "event.service-2.update"
       ],
+      "requestsFrom": [],
       "consumerGroups": [
         {
           "name": "service-2-consumer",
@@ -147,6 +151,7 @@
         "event.service-4.retries",
         "event.service-4.requests"
       ],
+      "requestsFrom": [],
       "consumerGroups": [
         {
           "name": "service-4-consumer",
@@ -173,6 +178,7 @@
     {
       "name": "service-7",
       "producesTo": [],
+      "requestsFrom": [],
       "consumerGroups": [
         {
           "name": "service-7-consumer",
@@ -196,6 +202,7 @@
         "event.service-5.specific.changelog",
         "event.service-5.repartition"
       ],
+      "requestsFrom": [],
       "consumerGroups": [
         {
           "name": "service-5-consumer",
@@ -227,6 +234,7 @@
     {
       "name": "service-8",
       "producesTo": [],
+      "requestsFrom": [],
       "consumerGroups": [
         {
           "name": "service-8-consumer",

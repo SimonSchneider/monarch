@@ -31,8 +31,10 @@ const Service = ({ name }) => {
   const warning = consumerGroupInfo
     .filter((cg) => cg.performance === "WARNING");
   const style = critical.length > 0 ? styles.critical : warning.length > 0 ? styles.warning : styles.ok;
+  const requestStyle = service.name === "service-8" ? styles.criticalRequest : "";
+  console.log(requestStyle);
   return (
-    <div key={name} className={`${styles.service} ${style} ${styles.infoDriver}`}>
+    <div key={name} className={`${styles.service} ${style} ${styles.infoDriver} ${requestStyle}`}>
       <h1>{name}</h1>
       <span>
         {critical.length > 0 && (<h2>Critical</h2>)}

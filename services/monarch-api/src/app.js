@@ -8,8 +8,6 @@ const stub = require("./stub.json");
 const stubWarning = require("./stub-warn.json");
 const stubCritical = require("./stub-critical.json");
 
-log.info("hello");
-
 const app = express();
 
 app.use(Utils.contextMiddleware);
@@ -92,8 +90,8 @@ async function getServiceList(context, topics, consumerGroups) {
       ...(services[name].producer ? services[name].producer : []),
       ...(services[name].producerRegex
         ? topics
-            .map((t) => t.name)
-            .filter((t) => t.match(services[name].producerRegex))
+          .map((t) => t.name)
+          .filter((t) => t.match(services[name].producerRegex))
         : []),
     ];
     return {
@@ -194,6 +192,13 @@ app.get(
       (c) => !matchedConsumerGroups.has(c.name)
     );
     res.json({ topics, consumerGroups, services });
+  })
+);
+
+app.get(
+  "/api/v1/configurations/",
+  Utils.asyncHandler((req, res) => {
+    res.json(conf);
   })
 );
 
