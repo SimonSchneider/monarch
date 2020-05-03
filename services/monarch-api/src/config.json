@@ -1,51 +1,59 @@
 {
   "topics": {
-    "query": "sum(rate(kafka_topic_partition_current_offset{topic!~\"__.*\"}[1h] offset 15h)) by (topic)",
+    "query": "sum(rate(kafka_topic_partition_current_offset{topic!~\"__.*\"}[4h] offset 9h)) by (topic)",
     "key": "topic"
   },
   "consumerGroups": {
-    "lagQuery": "sum(avg_over_time(kafka_consumergroup_lag{consumergroup!~\"ignored.*\", topic!~\"__.*\"}[1h] offset 15h)) by (topic, consumergroup)",
-    "rateQuery": "sum(rate(kafka_consumergroup_current_offset{consumergroup!~\"ignored.*\", topic!~\"__.*\"}[1h] offset 15h)) by (topic, consumergroup)",
+    "lagQuery": "sum(avg_over_time(kafka_consumergroup_lag{consumergroup!~\"ignored.*\", topic!~\"__.*\"}[4h] offset 9h)) by (topic, consumergroup)",
+    "rateQuery": "sum(rate(kafka_consumergroup_current_offset{consumergroup!~\"ignored.*\", topic!~\"__.*\"}[4h] offset 9h)) by (topic, consumergroup)",
     "topicKey": "topic",
     "groupKey": "consumergroup"
   },
   "metrics": {
     "requests": {
-      "rateQuery": "sum(rate(http_server_requests_seconds_count[1h] offset 14h)) by (service)",
-      "errorQuery": "60*sum(rate(http_server_requests_seconds_count{status=~\"5.*\"}[1h] offset 14h)) by (service)",
-      "durationQuery": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket[1h] offset 14h)) by (service,le))",
+      "rateQuery": "sum(rate(http_server_requests_seconds_count[4h] offset 9h)) by (service)",
+      "errorQuery": "60*sum(rate(http_server_requests_seconds_count{status=~\"5.*\"}[4h] offset 9h)) by (service)",
+      "durationQuery": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket[4h] offset 9h)) by (service,le))",
       "serviceKey": "service"
     }
   },
   "services": {
     "stats-service": {
       "producerRegex": "event.stats.*",
+      "requestsFrom": [],
       "consumerGroups": ["stats-service-consumer-1"]
     },
     "gloot-notification-service": {
       "producer": [],
+      "requestsFrom": [],
       "consumerGroups": ["gloot-notification-service"]
     },
     "public-game-service": {
       "producer": ["rawPublicGameEvents", "timebased-challenge.events"],
+      "requestsFrom": ["stats-service", "global-leaderboard-service"],
       "consumerGroups": []
     },
     "translator-service": {
       "producer": ["featureTopic"],
+      "requestsFrom": [],
       "consumerGroups": ["translator-service-consumer"]
     },
     "single-round-challenge-service": {
       "producerRegex": "single-round-challenge.*",
+      "requestsFrom": [],
       "consumerGroups": ["single-round-challenge-service"]
     },
     "global-leaderboard-service": {
+      "requestsFrom": [],
       "consumerGroups": ["global-leaderboard-service"]
     },
     "latest-winners-service": {
       "producerRegex": "latest-winners.*",
+      "requestsFrom": [],
       "consumerGroups": ["latest-winners-service"]
     },
     "bi-middleware": {
+      "requestsFrom": [],
       "consumerGroups": ["bi-consumer"]
     }
   }
