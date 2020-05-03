@@ -19,6 +19,12 @@
   color: black;
 }
 
+.bottomIcons {
+  position: fixed;
+  width: min-content;
+  bottom: 0;
+}
+
 .contentWrapper {
   grid-column-start: 2;
 }

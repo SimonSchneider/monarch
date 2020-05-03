@@ -4,8 +4,7 @@ import { scaleProperty } from "@jaegertracing/plexus/lib/Digraph/props-factories
 import Service from "./Service";
 import Topic from "./Topic";
 import ConsumerGroup from "./ConsumerGroup";
-import { useDispatch, useSelector } from "react-redux";
-import { LOAD_CONFIG } from "./redux/actionTypes";
+import { useSelector } from "react-redux";
 import styles from "./arch.module.css";
 import gridStyles from "./grid.module.css";
 
@@ -46,19 +45,6 @@ const TopologyGraph = () => {
   const weights = useSelector((state) => state.config.weights);
   const topicRates = useSelector((state) => state.config.topicRates);
   const consumerGroupInfo = useSelector((state) => state.config.consumerGroupInfo);
-  const loaded = useSelector((state) => state.config.loaded);
-
-  const dispatch = useDispatch();
-
-  const update = async ({ state = "good" } = {}) => {
-    const fromBe = await fetch(`/api/v1/curr?state=${state}`).then((r) => r.json());
-    dispatch({ type: LOAD_CONFIG, payload: fromBe });
-  };
-
-  if (!loaded) {
-    update();
-    return <div>LOADING STUFF</div>;
-  }
 
   const topics = conf.topics.map((t) => ({
     key: `topic.${t.name}`,
@@ -110,19 +96,7 @@ const TopologyGraph = () => {
   const edges = [...producers, ...consumers, ...unmatchedConsumers, ...requests];
 
   return (
-    <div
-      className={gridStyles.content}
-    // style={{
-    //   height: "99vh",
-    //   width: "99vw",
-    //   overflow: "hidden",
-    //   position: "fixed",
-    // }}
-    >
-      <button onClick={() => update({ state: "good" })} style={{ zIndex: 10, position: "absolute" }}>refresh</button>
-      <button onClick={() => update({ state: "warn" })} style={{ zIndex: 10, position: "absolute", left: 80 }}>warn</button>
-      <button onClick={() => update({ state: "crit" })} style={{ zIndex: 10, position: "absolute", left: 160 }}>crit</button>
-      <button onClick={() => update({ state: "real" })} style={{ zIndex: 10, position: "absolute", left: 240 }}>real</button>
+    <div className={gridStyles.content} >
       <Digraph
         zoom
         minimap
