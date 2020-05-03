@@ -20,41 +20,54 @@
   "services": {
     "stats-service": {
       "producerRegex": "event.stats.*",
-      "requestsFrom": [],
-      "consumerGroups": ["stats-service-consumer-1"]
+      "consumerGroups": [
+        "stats-service-consumer-1"
+      ]
     },
     "gloot-notification-service": {
-      "producer": [],
-      "requestsFrom": [],
-      "consumerGroups": ["gloot-notification-service"]
+      "consumerGroups": [
+        "gloot-notification-service"
+      ]
     },
     "public-game-service": {
-      "producer": ["rawPublicGameEvents", "timebased-challenge.events"],
-      "requestsFrom": ["stats-service", "global-leaderboard-service"],
-      "consumerGroups": []
+      "producer": [
+        "rawPublicGameEvents",
+        "timebased-challenge.events"
+      ],
+      "requestsFrom": [
+        "stats-service",
+        "global-leaderboard-service"
+      ]
     },
     "translator-service": {
-      "producer": ["featureTopic"],
-      "requestsFrom": [],
-      "consumerGroups": ["translator-service-consumer"]
+      "producer": [
+        "featureTopic"
+      ],
+      "consumerGroups": [
+        "translator-service-consumer"
+      ]
     },
     "single-round-challenge-service": {
       "producerRegex": "single-round-challenge.*",
-      "requestsFrom": [],
-      "consumerGroups": ["single-round-challenge-service"]
+      "consumerGroups": [
+        "single-round-challenge-service"
+      ]
     },
     "global-leaderboard-service": {
-      "requestsFrom": [],
-      "consumerGroups": ["global-leaderboard-service"]
+      "consumerGroups": [
+        "global-leaderboard-service"
+      ]
     },
     "latest-winners-service": {
       "producerRegex": "latest-winners.*",
-      "requestsFrom": [],
-      "consumerGroups": ["latest-winners-service"]
+      "consumerGroups": [
+        "latest-winners-service"
+      ]
     },
     "bi-middleware": {
-      "requestsFrom": [],
-      "consumerGroups": ["bi-consumer"]
+      "consumerGroups": [
+        "bi-consumer"
+      ]
     }
   }
 }

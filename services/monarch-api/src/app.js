@@ -83,7 +83,7 @@ async function getServiceList(context, topics, consumerGroups) {
     Prom.query(context, metrics.requests.durationQuery),
   ]).then((rs) => rs.map((r) => promToMap(r, metrics.requests.serviceKey)));
   return Object.keys(services).map((name) => {
-    const serviceCgs = services[name].consumerGroups.flatMap((c) =>
+    const serviceCgs = (services[name].consumerGroups || []).flatMap((c) =>
       consumerGroups.filter((cg) => cg.name === c)
     );
     const producer = [
@@ -103,7 +103,7 @@ async function getServiceList(context, topics, consumerGroups) {
           duration: durationRes[name],
         },
       },
-      requestsFrom: services[name].requestsFrom,
+      requestsFrom: services[name].requestsFrom || [],
       producesTo: producer,
       consumerGroups: serviceCgs,
     };
