@@ -90,8 +90,8 @@ async function getServiceList(context, topics, consumerGroups) {
       ...(services[name].producer ? services[name].producer : []),
       ...(services[name].producerRegex
         ? topics
-          .map((t) => t.name)
-          .filter((t) => t.match(services[name].producerRegex))
+            .map((t) => t.name)
+            .filter((t) => t.match(services[name].producerRegex))
         : []),
     ];
     return {
@@ -165,18 +165,6 @@ app.get(
 app.get(
   "/api/v1/curr",
   Utils.asyncHandler(async (req, res) => {
-    if (req.query.state === "good") {
-      res.json(stub);
-      return;
-    }
-    if (req.query.state === "warn") {
-      res.json(stubWarning);
-      return;
-    }
-    if (req.query.state === "crit") {
-      res.json(stubCritical);
-      return;
-    }
     const [topics, allConsumerGroups] = await Promise.all([
       getTopicList(req.context),
       getConsumerGroups(req.context),
