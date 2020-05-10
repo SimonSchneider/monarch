@@ -3,10 +3,8 @@ const bodyParser = require("body-parser");
 const Utils = require("./utils/middlewares.js");
 const log = require("./utils/logger");
 const Prom = require("./prometheus");
-const conf = require("./config.json");
-const stub = require("./stub.json");
-const stubWarning = require("./stub-warn.json");
-const stubCritical = require("./stub-critical.json");
+const conf = require("./mock-config.json");
+
 const fs = require('fs');
 var path = require('path');
 
@@ -107,18 +105,7 @@ async function getServiceList(context, topics, consumerGroups) {
 app.get(
   "/api/v1/curr",
   Utils.asyncHandler(async (req, res) => {
-    // if (req.query.state === "good") {
-    //   res.json(stub);
-    //   return;
-    // }
-    // if (req.query.state === "warn") {
-    //   res.json(stubWarning);
-    //   return;
-    // }
-    // if (req.query.state === "crit") {
-    //   res.json(stubCritical);
-    //   return;
-    // }
+    console.log(req.headers)
     const [topics, allConsumerGroups] = await Promise.all([
       getTopicList(req.context),
       getConsumerGroups(req.context),

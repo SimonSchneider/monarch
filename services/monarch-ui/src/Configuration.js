@@ -10,7 +10,6 @@ const Configuration = () => {
     <div className={gridStyles.content} style={{ overflow: "justified" }} >
       <JSONInput
         placeholder={config}
-        // theme="darktheme"
         locale={locale}
         waitAfterKeyPress={2000}
         height="100%"
