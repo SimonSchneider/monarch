@@ -7,6 +7,8 @@ const conf = require("./config.json");
 const stub = require("./stub.json");
 const stubWarning = require("./stub-warn.json");
 const stubCritical = require("./stub-critical.json");
+const fs = require('fs');
+var path = require('path');
 
 const app = express();
 
@@ -14,14 +16,6 @@ app.use(Utils.contextMiddleware);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
-
-async function getTopics(context) {
-  const topicResp = await Prom.query(context, conf.topics.query);
-  return topicResp.data.result.reduce(
-    (acc, tar) => ({ ...acc, [tar.metric[conf.topics.key]]: tar.value[1] }),
-    {}
-  );
-}
 
 async function getTopicList(context) {
   const topicResp = await Prom.query(context, conf.topics.query);
@@ -90,8 +84,8 @@ async function getServiceList(context, topics, consumerGroups) {
       ...(services[name].producer ? services[name].producer : []),
       ...(services[name].producerRegex
         ? topics
-            .map((t) => t.name)
-            .filter((t) => t.match(services[name].producerRegex))
+          .map((t) => t.name)
+          .filter((t) => t.match(services[name].producerRegex))
         : []),
     ];
     return {
@@ -110,61 +104,21 @@ async function getServiceList(context, topics, consumerGroups) {
   });
 }
 
-async function getConsumers(context) {
-  const consumerResp = await Prom.query(context, conf.consumerGroups.query);
-  return consumerResp.data.result.reduce((acc, tar) => {
-    const cgName = tar.metric[conf.consumerGroups.groupKey];
-    const currCg = acc[cgName] ? acc[cgName] : {};
-    const newCg = {
-      ...currCg,
-      [tar.metric[conf.consumerGroups.topicKey]]: tar.value[1],
-    };
-    const { [cgName]: deletedKey, ...withoutCurrCg } = acc;
-    return {
-      ...withoutCurrCg,
-      [cgName]: newCg,
-    };
-  }, {});
-}
-
-async function getServices(context) {
-  const [topics, cgs] = await Promise.all([
-    getTopics(context),
-    getConsumers(context),
-  ]);
-  const serv = conf.services;
-  return Object.keys(serv).map((k) => {
-    const consumer = serv[k].consumerGroups.map((c) => ({
-      name: c,
-      lag: cgs[c],
-    }));
-    const producer = [
-      ...(serv[k].producer ? serv[k].producer : []),
-      ...(serv[k].producerRegex
-        ? Object.keys(topics).filter((t) => t.match(serv[k].producerRegex))
-        : []),
-    ];
-    return {
-      name: k,
-      producesTo: producer,
-      cgs: consumer,
-    };
-  });
-}
-
-app.get(
-  "/",
-  Utils.asyncHandler(async (req, res) => {
-    const topics = await getTopics(req.context);
-    const cgs = await getConsumers(req.context);
-    const services = await getServices(req.context);
-    res.json({ topics, cgs, services });
-  })
-);
-
 app.get(
   "/api/v1/curr",
   Utils.asyncHandler(async (req, res) => {
+    if (req.query.state === "good") {
+      res.json(stub);
+      return;
+    }
+    if (req.query.state === "warn") {
+      res.json(stubWarning);
+      return;
+    }
+    if (req.query.state === "crit") {
+      res.json(stubCritical);
+      return;
+    }
     const [topics, allConsumerGroups] = await Promise.all([
       getTopicList(req.context),
       getConsumerGroups(req.context),
@@ -188,6 +142,9 @@ app.get(
   "/api/v1/configurations/",
   Utils.asyncHandler((req, res) => {
     res.json(conf);
+    //   console.log(__dirname);
+    //   fs.readFile(
+    //     path.join(__dirname, "/config.json"), (f) => res.json(f));
   })
 );
 
