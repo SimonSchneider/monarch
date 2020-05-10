@@ -12,7 +12,6 @@ function from(req) {
 
 module.exports.contextMiddleware = (req, res, next) => {
   req.context = from(req);
-  log.info("received request");
   next();
 };
 

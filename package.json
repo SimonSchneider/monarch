@@ -7,7 +7,7 @@
     "server": "npm run dev --prefix services/monarch-api",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build": "npm run build --prefix services/monarch-ui && docker build . -t monarch"
+    "build": "npm run build --prefix services/monarch-ui"
   },
   "eslintConfig": {
     "extends": "react-app"
