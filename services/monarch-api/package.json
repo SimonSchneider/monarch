@@ -8,7 +8,7 @@
     "test": "jest --collectCoverage",
     "test:nocov": "jest",
     "fmt": "eslint . --fix",
-    "dev": "nodemon src/server.js",
+    "dev": "CONFIG_DIRECTORY=./ node src/server.js",
     "start": "node src/server.js"
   },
   "jest": {
