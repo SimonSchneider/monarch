@@ -4,6 +4,7 @@ const Utils = require("./utils/middlewares.js");
 const log = require("./utils/logger");
 const Prom = require("./prometheus");
 const conf = require("./mock-config.json");
+const uiRouter = require("./ui");
 
 const fs = require('fs');
 var path = require('path');
@@ -105,7 +106,6 @@ async function getServiceList(context, topics, consumerGroups) {
 app.get(
   "/api/v1/curr",
   Utils.asyncHandler(async (req, res) => {
-    console.log(req.headers)
     const [topics, allConsumerGroups] = await Promise.all([
       getTopicList(req.context),
       getConsumerGroups(req.context),
@@ -135,5 +135,6 @@ app.get(
   })
 );
 
+app.use("/", uiRouter);
 app.use(Utils.errorMiddleware);
 module.exports = app;
