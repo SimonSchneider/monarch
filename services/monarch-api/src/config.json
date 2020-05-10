@@ -1,19 +1,19 @@
 {
   "topics": {
-    "query": "sum(rate(kafka_topic_partition_current_offset{topic!~\"__.*|.*changelog|.*repartition\"}[1h] offset 1m)) by (topic)",
+    "query": "sum(rate(kafka_topic_partition_current_offset{topic!~\"__.*|.*changelog|.*repartition\"}[1h] offset 12h)) by (topic)",
     "key": "topic"
   },
   "consumerGroups": {
-    "lagQuery": "sum(avg_over_time(kafka_consumergroup_lag{consumergroup!~\"ignored.*\", topic!~\"__.*|.*changelog|.*repartition\"}[1h] offset 1m)) by (topic, consumergroup)",
-    "rateQuery": "sum(rate(kafka_consumergroup_current_offset{consumergroup!~\"ignored.*\", topic!~\"__.*|.*changelog|.*repartition\"}[1h] offset 1m)) by (topic, consumergroup)",
+    "lagQuery": "sum(avg_over_time(kafka_consumergroup_lag{consumergroup!~\"ignored.*\", topic!~\"__.*|.*changelog|.*repartition\"}[1h] offset 12h)) by (topic, consumergroup)",
+    "rateQuery": "sum(rate(kafka_consumergroup_current_offset{consumergroup!~\"ignored.*\", topic!~\"__.*|.*changelog|.*repartition\"}[1h] offset 12h)) by (topic, consumergroup)",
     "topicKey": "topic",
     "groupKey": "consumergroup"
   },
   "metrics": {
     "requests": {
-      "rateQuery": "sum(rate(http_server_requests_seconds_count[1h] offset 1m)) by (service)",
-      "errorQuery": "60*sum(rate(http_server_requests_seconds_count{status=~\"5.*\"}[1h] offset 1m)) by (service)",
-      "durationQuery": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket[1h] offset 1m)) by (service,le))",
+      "rateQuery": "sum(rate(http_server_requests_seconds_count[1h] offset 12h)) by (service)",
+      "errorQuery": "60*sum(rate(http_server_requests_seconds_count{status=~\"5.*\"}[1h] offset 12h)) by (service)",
+      "durationQuery": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket[1h] offset 12h)) by (service,le))",
       "serviceKey": "service"
     }
   },
@@ -39,6 +39,10 @@
     "single-round-challenge-service": {
       "producerRegex": "single-round-challenge.*",
       "consumerGroups": ["single-round-challenge-service"]
+    },
+    "versus-challenge-service": {
+      "producerRegex": "versus-challenge.*",
+      "consumerGroups": ["versus-challenge-service"]
     },
     "global-leaderboard-service": {
       "consumerGroups": ["global-leaderboard-service"]

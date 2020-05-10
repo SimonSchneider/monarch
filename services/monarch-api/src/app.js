@@ -107,18 +107,18 @@ async function getServiceList(context, topics, consumerGroups) {
 app.get(
   "/api/v1/curr",
   Utils.asyncHandler(async (req, res) => {
-    if (req.query.state === "good") {
-      res.json(stub);
-      return;
-    }
-    if (req.query.state === "warn") {
-      res.json(stubWarning);
-      return;
-    }
-    if (req.query.state === "crit") {
-      res.json(stubCritical);
-      return;
-    }
+    // if (req.query.state === "good") {
+    //   res.json(stub);
+    //   return;
+    // }
+    // if (req.query.state === "warn") {
+    //   res.json(stubWarning);
+    //   return;
+    // }
+    // if (req.query.state === "crit") {
+    //   res.json(stubCritical);
+    //   return;
+    // }
     const [topics, allConsumerGroups] = await Promise.all([
       getTopicList(req.context),
       getConsumerGroups(req.context),
