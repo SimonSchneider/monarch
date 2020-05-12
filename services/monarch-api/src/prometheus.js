@@ -1,7 +1,10 @@
 const baseUrl = `${
   process.env.PROMETHEUS_HOST || "http://localhost:9090"
 }/api/v1`;
+const format = require("string-template");
 const fetch = require("./utils/request").fetch(baseUrl);
 
 module.exports.query = async (context, queryString) =>
-  fetch(context, "/query", { query: { query: queryString } });
+  fetch(context, "/query", {
+    query: { query: format(queryString, context.templates) },
+  });
