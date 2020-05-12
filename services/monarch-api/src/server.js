@@ -3,8 +3,8 @@ const log = require("./utils/logger");
 
 const port = 9081;
 
-process.on('SIGINT', function () {
-  console.log("Caught interrupt signal");
+process.on("SIGINT", () => {
+  log.info("Caught interrupt signal");
   process.exit();
 });
 

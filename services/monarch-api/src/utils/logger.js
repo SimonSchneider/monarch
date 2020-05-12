@@ -8,7 +8,7 @@ const logger = winston.createLogger({
 
 if (process.env.NODE_ENV === "cloud") {
   logger.format = winston.format.json();
-  logger.defaultMeta = { service: "user-service" };
+  logger.defaultMeta = { service: "monarch" };
 }
 
 module.exports = logger;

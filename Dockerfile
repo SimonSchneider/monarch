@@ -7,5 +7,7 @@ COPY services/monarch-api/src ./
 COPY services/monarch-ui/build ./build
 
 EXPOSE 9081
-ENV PROMETHEUS_HOST=http://host.docker.internal:9090
-CMD [ "node", "server.js"]
+VOLUME /data
+ENV CONFIG_DIRECTORY="/data"
+ENV PROMETHEUS_HOST="http://host.docker.internal:9090"
+CMD ["node", "server.js"]
