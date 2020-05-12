@@ -1,13 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const Utils = require("./utils/middlewares.js");
-const log = require("./utils/logger");
 const Prom = require("./prometheus");
 const conf = require("./mock-config.json");
 const uiRouter = require("./ui");
-
-const fs = require('fs');
-var path = require('path');
 
 const app = express();
 
@@ -83,8 +79,8 @@ async function getServiceList(context, topics, consumerGroups) {
       ...(services[name].producer ? services[name].producer : []),
       ...(services[name].producerRegex
         ? topics
-          .map((t) => t.name)
-          .filter((t) => t.match(services[name].producerRegex))
+            .map((t) => t.name)
+            .filter((t) => t.match(services[name].producerRegex))
         : []),
     ];
     return {
