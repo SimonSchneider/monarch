@@ -54,6 +54,7 @@ const App = () => {
             <NavLink to="/graph"><TimelineIcon className={styles.sidebarIcon} /></NavLink>
             <NavLink to="/config"><SettingsIcon className={styles.sidebarIcon} /></NavLink>
           </div>
+          <input id="standard-basic" label="Standard" />
           <div className={styles.bottomIcons}>
             <RefreshIcon onClick={() => update({ state: "good" })} className={styles.sidebarIcon} style={{ color: "green" }} />
             <RefreshIcon onClick={() => update({ state: "warn" })} className={styles.sidebarIcon} style={{ color: "yellow" }} />

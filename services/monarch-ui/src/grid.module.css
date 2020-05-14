@@ -22,7 +22,10 @@
 .bottomIcons {
   position: fixed;
   width: min-content;
+  height: max-content;
   bottom: 0;
+  left: 0;
+  float: left;
 }
 
 .contentWrapper {
