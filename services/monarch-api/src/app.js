@@ -102,6 +102,8 @@ async function getServiceList(context, topics, consumerGroups) {
 app.get(
   "/api/v1/curr",
   Utils.asyncHandler(async (req, res) => {
+    const oldContext = req.context;
+    req.context = { ...oldContext, templates: req.query };
     const [topics, allConsumerGroups] = await Promise.all([
       getTopicList(req.context),
       getConsumerGroups(req.context),

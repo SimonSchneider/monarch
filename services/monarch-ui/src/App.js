@@ -31,7 +31,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   const update = async ({ state = "good" } = {}) => {
-    const fromBe = await fetch(`/api/v1/curr?state=${state}`, { headers: { Authorization: state } }).then((r) => r.json());
+    const fromBe = await fetch(`/api/v1/curr?offset=5m&interval=10h`, { headers: { Authorization: state } }).then((r) => r.json());
     dispatch({ type: LOAD_CONFIG, payload: fromBe });
   };
   const updateBe = async () => {
@@ -54,6 +54,7 @@ const App = () => {
             <NavLink to="/graph"><TimelineIcon className={styles.sidebarIcon} /></NavLink>
             <NavLink to="/config"><SettingsIcon className={styles.sidebarIcon} /></NavLink>
           </div>
+          <input id="standard-basic" label="Standard" />
           <div className={styles.bottomIcons}>
             <RefreshIcon onClick={() => update({ state: "good" })} className={styles.sidebarIcon} style={{ color: "green" }} />
             <RefreshIcon onClick={() => update({ state: "warn" })} className={styles.sidebarIcon} style={{ color: "yellow" }} />

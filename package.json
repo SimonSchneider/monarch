@@ -9,9 +9,6 @@
     "eject": "react-scripts eject",
     "build": "npm run build --prefix services/monarch-ui"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
