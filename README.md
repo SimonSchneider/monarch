@@ -28,3 +28,13 @@ else can be manually configured.
     - Prometheus as the source for metrics
   - future
     - automatic topology via tracing
+
+
+## Helm chart
+
+- deployment
+- service
+- optional ingress
+- serviceAccount
+- optional pvc
+- optional bootstrap from configmap
