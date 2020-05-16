@@ -12,6 +12,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { useDispatch, useSelector } from "react-redux";
 import { LOAD_CONFIG, LOAD_BACKEND_CONFIG } from "./redux/actionTypes";
+import schedule from "./scheduler";
 
 const Content = (loaded) => {
   if (!loaded) {
@@ -25,7 +26,6 @@ const Content = (loaded) => {
 }
 
 const App = () => {
-
   const loaded = useSelector((state) => state.config.loaded);
   const loadedBe = useSelector((state) => state.backendConfig.loaded);
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ const App = () => {
   }
 
   if (!loaded) {
-    update();
+    schedule("update", 15000, update);
   }
   if (!loadedBe) {
     updateBe();
