@@ -3,7 +3,6 @@ import { LayoutManager, Digraph } from "@jaegertracing/plexus";
 import { scaleProperty } from "@jaegertracing/plexus/lib/Digraph/props-factories";
 import Service from "./Service";
 import Topic from "./Topic";
-import ConsumerGroup from "./ConsumerGroup";
 import { useSelector } from "react-redux";
 import styles from "./arch.module.css";
 import gridStyles from "./grid.module.css";
@@ -54,11 +53,7 @@ const TopologyGraph = () => {
     key: `service.${s.name}`,
     component: <Service name={s.name} />,
   }));
-  const consumerGroups = conf.consumerGroups.map((cg) => ({
-    key: `cg.${cg.name}`,
-    component: <ConsumerGroup name={cg.name} />,
-  }));
-  const vertices = [...topics, ...services, ...consumerGroups];
+  const vertices = [...topics, ...services];
 
   const producers = conf.services.flatMap((s) =>
     s.producesTo.map((t) => ({
@@ -77,14 +72,6 @@ const TopologyGraph = () => {
       }))
     )
   );
-  const unmatchedConsumers = conf.consumerGroups.flatMap((cg) =>
-    cg.topics.map((t) => ({
-      from: `topic.${t.name}`,
-      to: `cg.${cg.name}`,
-      topic: t.name,
-      cg: cg.name,
-    }))
-  );
   const requests = conf.services.flatMap((ss) =>
     ss.requestsFrom.flatMap((st) =>
       ({
@@ -93,7 +80,7 @@ const TopologyGraph = () => {
       })
     ));
 
-  const edges = [...producers, ...consumers, ...unmatchedConsumers, ...requests];
+  const edges = [...producers, ...consumers, ...requests];
 
   return (
     <div className={gridStyles.content} >
