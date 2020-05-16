@@ -35,9 +35,10 @@ function get(query, state) {
   }
 }
 
+const states = ["good", "warn", "crit"];
+
 app.get(
   "/api/v1/query",
-  (req, res) => res.json(answer(get(req.query.query, "crit")))
-);
+  (req, res) => res.json(answer(get(req.query.query, states[Math.floor(Math.random() * states.length)]))));
 
 module.exports = app;
