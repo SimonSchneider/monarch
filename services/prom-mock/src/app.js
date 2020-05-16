@@ -37,7 +37,7 @@ function get(query, state) {
 
 app.get(
   "/api/v1/query",
-  (req, res) => res.json(answer(get(req.query.query, req.headers.authorization)))
+  (req, res) => res.json(answer(get(req.query.query, "crit")))
 );
 
 module.exports = app;
