@@ -1,4 +1,4 @@
-import { LOAD_BACKEND_CONFIG } from "../actionTypes";
+import { LOAD_BACKEND_CONFIG, LOADING_BACKEND_CONFIG } from "../actionTypes";
 
 const initialState = {
   loaded: false,
@@ -9,7 +9,14 @@ export default function (state = initialState, action) {
     case LOAD_BACKEND_CONFIG: {
       return {
         config: action.payload,
-        loaded: true
+        loaded: true,
+      };
+    }
+    case LOADING_BACKEND_CONFIG: {
+      const { loaded, ...oldState } = state;
+      return {
+        ...oldState,
+        loaded: false,
       };
     }
     default:
