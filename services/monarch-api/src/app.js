@@ -2,38 +2,39 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const Utils = require("./utils/middlewares.js");
 const Prom = require("./prometheus");
-const conf = require("./mock-config.json");
 const uiRouter = require("./ui");
+const configuration = require("./configuration");
 
 const app = express();
 
+const jsonParser = bodyParser.json();
+
 app.use(Utils.contextMiddleware);
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
 async function getTopicList(context) {
-  const topicResp = await Prom.query(context, conf.topics.query);
+  const topicResp = await Prom.query(context, context.conf.topics.query);
   return topicResp.data.result.map((v) => ({
-    name: v.metric[conf.topics.key],
+    name: v.metric[context.conf.topics.key],
     eventRate: Number(v.value[1]),
   }));
 }
 
 async function getConsumerGroups(context) {
   const [consumerLagResp, consumerRateResp] = await Promise.all([
-    Prom.query(context, conf.consumerGroups.lagQuery),
-    Prom.query(context, conf.consumerGroups.rateQuery),
+    Prom.query(context, context.conf.consumerGroups.lagQuery),
+    Prom.query(context, context.conf.consumerGroups.rateQuery),
   ]);
   const consumerRates = consumerRateResp.data.result.map((r) => {
-    const name = r.metric[conf.consumerGroups.groupKey];
-    const topic = r.metric[conf.consumerGroups.topicKey];
+    const name = r.metric[context.conf.consumerGroups.groupKey];
+    const topic = r.metric[context.conf.consumerGroups.topicKey];
     const rate = r.value[1] >= 0 ? Number(r.value[1]) : 0;
     return { name, topic, rate };
   });
   return consumerLagResp.data.result.reduce((agg, v) => {
-    const name = v.metric[conf.consumerGroups.groupKey];
-    const topicName = v.metric[conf.consumerGroups.topicKey];
+    const name = v.metric[context.conf.consumerGroups.groupKey];
+    const topicName = v.metric[context.conf.consumerGroups.topicKey];
     const topic = {
       name: topicName,
       lag: v.value[1] >= 0 ? Number(v.value[1]) : 0,
@@ -65,7 +66,7 @@ function promToMap(promResp, key) {
 }
 
 async function getServiceList(context, topics, consumerGroups) {
-  const { metrics, services } = conf;
+  const { metrics, services } = context.conf;
   const [rateRes, errorRes, durationRes] = await Promise.all([
     Prom.query(context, metrics.requests.rateQuery),
     Prom.query(context, metrics.requests.errorQuery),
@@ -102,6 +103,8 @@ async function getServiceList(context, topics, consumerGroups) {
 app.get(
   "/api/v1/curr",
   Utils.asyncHandler(async (req, res) => {
+    const oldContext = req.context;
+    req.context = { ...oldContext, conf: await configuration.get() };
     const [topics, allConsumerGroups] = await Promise.all([
       getTopicList(req.context),
       getConsumerGroups(req.context),
@@ -123,11 +126,17 @@ app.get(
 
 app.get(
   "/api/v1/configurations/",
-  Utils.asyncHandler((req, res) => {
-    res.json(conf);
-    //   console.log(__dirname);
-    //   fs.readFile(
-    //     path.join(__dirname, "/config.json"), (f) => res.json(f));
+  Utils.asyncHandler(async (req, res) => {
+    res.json(await configuration.get());
+  })
+);
+
+app.post(
+  "/api/v1/configurations/",
+  jsonParser,
+  Utils.asyncHandler(async (req, res) => {
+    await configuration.set(req.body);
+    res.send();
   })
 );
 

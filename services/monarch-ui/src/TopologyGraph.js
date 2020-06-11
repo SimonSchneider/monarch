@@ -17,7 +17,7 @@ function getColor(cgInfo) {
     case "WARNING":
       return "#ffbc0a";
     default:
-      return "black"
+      return "black";
   }
 }
 
@@ -39,11 +39,13 @@ const lm = new LayoutManager({
   ranksep: 2,
 });
 
-const TopologyGraph = () => {
+export default () => {
   const conf = useSelector((state) => state.config.config);
   const weights = useSelector((state) => state.config.weights);
   const topicRates = useSelector((state) => state.config.topicRates);
-  const consumerGroupInfo = useSelector((state) => state.config.consumerGroupInfo);
+  const consumerGroupInfo = useSelector(
+    (state) => state.config.consumerGroupInfo
+  );
 
   const topics = conf.topics.map((t) => ({
     key: `topic.${t.name}`,
@@ -73,17 +75,16 @@ const TopologyGraph = () => {
     )
   );
   const requests = conf.services.flatMap((ss) =>
-    ss.requestsFrom.flatMap((st) =>
-      ({
-        from: `service.${ss.name}`,
-        to: `service.${st}`
-      })
-    ));
+    ss.requestsFrom.flatMap((st) => ({
+      from: `service.${ss.name}`,
+      to: `service.${st}`,
+    }))
+  );
 
   const edges = [...producers, ...consumers, ...requests];
 
   return (
-    <div className={gridStyles.content} >
+    <div className={gridStyles.content}>
       <Digraph
         zoom
         minimap
@@ -111,7 +112,13 @@ const TopologyGraph = () => {
                 return { strokeDasharray: "5,5" };
               }
               const weight = topicRates[l.edge.topic];
-              const cgInfo = consumerGroupInfo.find((cg) => l.edge.cg && l.edge.topic && cg.consumerGroup === l.edge.cg && cg.topic === l.edge.topic);
+              const cgInfo = consumerGroupInfo.find(
+                (cg) =>
+                  l.edge.cg &&
+                  l.edge.topic &&
+                  cg.consumerGroup === l.edge.cg &&
+                  cg.topic === l.edge.topic
+              );
               return toWeight(weights, weight, cgInfo);
             },
             markerEndId: "edge-arrow",
@@ -133,5 +140,3 @@ const TopologyGraph = () => {
     </div>
   );
 };
-
-export default TopologyGraph;

@@ -3,7 +3,7 @@ import helpers from "./utils";
 import { useSelector } from "react-redux";
 import styles from "./arch.module.css";
 
-const Topic = ({ name } = {}) => {
+export default ({ name } = {}) => {
   const { eventRate } = useSelector((state) =>
     state.config.config.topics.find((t) => t.name === name)
   );
@@ -14,5 +14,3 @@ const Topic = ({ name } = {}) => {
     </div>
   );
 };
-
-export default Topic;
