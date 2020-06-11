@@ -3,21 +3,36 @@ import gridStyles from "./grid.module.css";
 import JSONInput from "react-json-editor-ajrm";
 import locale from "react-json-editor-ajrm/locale/en";
 import { useDispatch, useSelector } from "react-redux";
+import CheckIcon from "@material-ui/icons/Check";
+import ClearIcon from "@material-ui/icons/Clear";
 import actions from "./requests";
+import styles from "./grid.module.css";
 
 export default () => {
   const config = useSelector((state) => state.backendConfig.config);
   const dispatch = useDispatch();
-  const { newConfig } = actions(dispatch);
+  const { update, updateBe, newConfig } = actions(dispatch);
   const [localConfig, setLocalConfig] = useState(config);
   return (
     <div className={gridStyles.content} style={{ overflow: "justified" }}>
-      <button onClick={() => newConfig(localConfig)}>Gurka</button>
+      <div className={styles.sidebar}>
+        <ClearIcon
+          onClick={() => {
+            update();
+            updateBe();
+          }}
+          className={styles.sidebarIcon}
+        />
+        <CheckIcon
+          onClick={() => newConfig(localConfig)}
+          className={styles.sidebarIcon}
+        />
+      </div>
       <JSONInput
         placeholder={localConfig}
         locale={locale}
-        waitAfterKeyPress={1000}
-        height="100%"
+        onKeyPressUpdate={false}
+        height="calc(100vh - 40px)"
         width="100%"
         onChange={(c) => setLocalConfig(c.jsObject)}
       />
