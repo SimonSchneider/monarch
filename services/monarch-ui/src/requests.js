@@ -1,4 +1,9 @@
-import { loadConfig, loadBackendConfig } from "./redux/actions";
+import {
+  loadConfig,
+  loadingConfig,
+  loadBackendConfig,
+  loadingBackendConfig,
+} from "./redux/actions";
 
 const update = (dispatch) => {
   return async () => {
@@ -9,6 +14,7 @@ const update = (dispatch) => {
 
 const updateBe = (dispatch) => {
   return async () => {
+    dispatch(loadingBackendConfig());
     const fromBe = await fetch(`/api/v1/configurations`).then((r) => r.json());
     dispatch(loadBackendConfig(fromBe));
   };

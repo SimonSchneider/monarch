@@ -1,4 +1,4 @@
-import { LOAD_CONFIG } from "../actionTypes";
+import { LOAD_CONFIG, LOADING_CONFIG } from "../actionTypes";
 
 const initialState = {
   loaded: false,
@@ -60,15 +60,17 @@ function consumerGroupPerformance(topicRate, cgRate, cgLag) {
 }
 
 function cgInfo(cgs, topicRates, serviceName) {
-  return cgs.flatMap((cg) => cg.topics.map((t) => ({
-    consumerGroup: cg.name,
-    serviceName,
-    topic: t.name,
-    lag: t.lag,
-    consumptionRate: t.rate,
-    productionRate: topicRates[t.name],
-    performance: consumerGroupPerformance(topicRates[t.name], t.rate, t.lag),
-  })));
+  return cgs.flatMap((cg) =>
+    cg.topics.map((t) => ({
+      consumerGroup: cg.name,
+      serviceName,
+      topic: t.name,
+      lag: t.lag,
+      consumptionRate: t.rate,
+      productionRate: topicRates[t.name],
+      performance: consumerGroupPerformance(topicRates[t.name], t.rate, t.lag),
+    }))
+  );
 }
 
 export default function (state = initialState, action) {
@@ -83,7 +85,12 @@ export default function (state = initialState, action) {
         })),
       };
       const topicRates = mapToTopicRates(newConf.topics);
-      const consumerGroupInfo = [...newConf.consumerGroups.map((cg) => cgInfo(cg, topicRates)), ...newConf.services.flatMap((s) => cgInfo(s.consumerGroups, topicRates, s.name))];
+      const consumerGroupInfo = [
+        ...newConf.consumerGroups.map((cg) => cgInfo(cg, topicRates)),
+        ...newConf.services.flatMap((s) =>
+          cgInfo(s.consumerGroups, topicRates, s.name)
+        ),
+      ];
       const newState = {
         config: newConf,
         weights: weights(newConf.topics.map((t) => t.eventRate)),
@@ -93,6 +100,13 @@ export default function (state = initialState, action) {
       };
       console.log(newState);
       return newState;
+    }
+    case LOADING_CONFIG: {
+      const { loaded, ...oldState } = state;
+      return {
+        ...oldState,
+        loaded: false,
+      };
     }
     default:
       return state;
