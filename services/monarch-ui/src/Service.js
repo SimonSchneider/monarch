@@ -2,12 +2,13 @@ import React from "react";
 import helpers from "./utils";
 import { useSelector } from "react-redux";
 import styles from "./arch.module.css";
+import PropTypes from "prop-types";
 
 function toTopicInfo(cgs) {
   return cgs.map((cg) => (
     <div key={cg.consumerGroup + cg.topic}>
-      lagging by {helpers.formatNumber(cg.lag)} events on '{cg.topic}' consuming{" "}
-      {helpers.formatNumber(cg.consumptionRate)} events/s
+      lagging by {helpers.formatNumber(cg.lag)} events on &apos;{cg.topic}&apos;
+      consuming {helpers.formatNumber(cg.consumptionRate)} events/s
     </div>
   ));
 }
@@ -34,7 +35,7 @@ function formatMetrics(metrics) {
   );
 }
 
-export default ({ name }) => {
+const Service = ({ name }) => {
   const service = useSelector((state) =>
     state.currentState.config.services.find((s) => s.name === name)
   );
@@ -70,3 +71,10 @@ export default ({ name }) => {
     </div>
   );
 };
+
+Service.displayName = "Service";
+Service.propTypes = {
+  name: PropTypes.string.isRequired,
+};
+
+export default Service;

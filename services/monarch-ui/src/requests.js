@@ -1,8 +1,4 @@
-import {
-  refreshState,
-  loadConfig,
-  loadingConfig,
-} from "./redux/actions";
+import { refreshState, loadConfig, loadingConfig } from "./redux/actions";
 
 const updateState = (dispatch) => {
   return async () => {
@@ -31,7 +27,7 @@ export default (dispatch) => ({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(config),
     });
-    updateState(dispatch)();
-    updateConfig(dispatch)();
+    await updateState(dispatch)();
+    await updateConfig(dispatch)();
   },
 });

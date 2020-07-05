@@ -8,7 +8,7 @@ import ClearIcon from "@material-ui/icons/Clear";
 import actions from "./requests";
 import styles from "./grid.module.css";
 
-export default () => {
+const Configuration = () => {
   const config = useSelector((state) => state.config.config);
   const dispatch = useDispatch();
   const { refreshState, updateConfig, newConfig } = actions(dispatch);
@@ -39,3 +39,7 @@ export default () => {
     </div>
   );
 };
+
+Configuration.displayName = "Configuration";
+
+export default Configuration;

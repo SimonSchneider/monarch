@@ -13,9 +13,8 @@ export default function (state = initialState, action) {
       };
     }
     case LOADING_CONFIG: {
-      const { loaded, ...oldState } = state;
       return {
-        ...oldState,
+        ...state,
         loaded: false,
       };
     }

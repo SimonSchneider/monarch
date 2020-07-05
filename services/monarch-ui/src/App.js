@@ -23,7 +23,7 @@ const Content = (loaded) => {
   );
 };
 
-export default () => {
+const App = () => {
   const stateLoaded = useSelector((state) => state.currentState.loaded);
   const configLoaded = useSelector((state) => state.config.loaded);
   const dispatch = useDispatch();
@@ -60,3 +60,7 @@ export default () => {
     </HashRouter>
   );
 };
+
+App.displayName = "App";
+
+export default App;

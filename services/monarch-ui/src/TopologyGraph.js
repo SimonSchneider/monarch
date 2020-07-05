@@ -39,7 +39,7 @@ const lm = new LayoutManager({
   ranksep: 2,
 });
 
-export default () => {
+const TopologyGraph = () => {
   const currentState = useSelector((state) => state.currentState.config);
   const weights = useSelector((state) => state.currentState.weights);
   const topicRates = useSelector((state) => state.currentState.topicRates);
@@ -140,3 +140,7 @@ export default () => {
     </div>
   );
 };
+
+TopologyGraph.displayName = "Topology Graph";
+
+export default TopologyGraph;

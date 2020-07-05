@@ -14,7 +14,7 @@
 .hoverable span {
   display: none;
   opacity: 0;
-  transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
 }
 
 .hoverable h1 {
@@ -42,7 +42,7 @@
   z-index: 1000;
 }
 
-.infoDriver:hover span{
+.infoDriver:hover span {
   display: block;
   opacity: 1;
   z-index: 1000;

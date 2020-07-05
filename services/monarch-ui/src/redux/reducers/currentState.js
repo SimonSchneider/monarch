@@ -19,9 +19,12 @@ function cmp(extractor) {
 }
 
 const sortConsumerGroups = (cgs, existingTopics) => {
-  return cgs
-    .sort(cmp((c) => c.name))
-    .map((c) => ({ ...c, topics: c.topics.filter((t) => existingTopics.has(t.name)).sort(cmp((t) => t.name)) }))
+  return cgs.sort(cmp((c) => c.name)).map((c) => ({
+    ...c,
+    topics: c.topics
+      .filter((t) => existingTopics.has(t.name))
+      .sort(cmp((t) => t.name)),
+  }));
 };
 
 function toScaleFn(rates) {
@@ -76,11 +79,16 @@ function cgInfo(cgs, topicRates, serviceName) {
 export default function (state = initialState, action) {
   switch (action.type) {
     case REFRESH_STATE: {
-      const existingTopics = new Set(action.payload.topics.map((t) => t.name))
-      const existingServices = new Set(action.payload.services.map((s) => s.name))
+      const existingTopics = new Set(action.payload.topics.map((t) => t.name));
+      const existingServices = new Set(
+        action.payload.services.map((s) => s.name)
+      );
       const newConf = {
         topics: action.payload.topics.sort(cmp((t) => t.name)),
-        consumerGroups: sortConsumerGroups(action.payload.consumerGroups, existingTopics),
+        consumerGroups: sortConsumerGroups(
+          action.payload.consumerGroups,
+          existingTopics
+        ),
         services: action.payload.services.sort(cmp((s) => s.name)).map((s) => ({
           ...s,
           requestsFrom: s.requestsFrom.filter((st) => existingServices.has(st)),
@@ -93,20 +101,17 @@ export default function (state = initialState, action) {
           cgInfo(s.consumerGroups, topicRates, s.name)
         ),
       ];
-      const newState = {
+      return {
         config: newConf,
         weights: weights(newConf.topics.map((t) => t.eventRate)),
         topicRates,
         consumerGroupInfo,
         loaded: true,
       };
-      console.log(newState);
-      return newState;
     }
     case REFRESHING_STATE: {
-      const { loaded, ...oldState } = state;
       return {
-        ...oldState,
+        ...state,
         loaded: false,
       };
     }

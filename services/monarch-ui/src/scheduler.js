@@ -4,7 +4,7 @@ export default (key, interval, fn) => {
   if (tasks.has(key)) {
     tasks.get(key)();
   }
-  var running = true;
+  let running = true;
   const runner = () => {
     fn();
     if (running) {
