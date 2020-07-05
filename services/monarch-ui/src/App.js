@@ -1,6 +1,7 @@
 import React from "react";
 import TopologyGraph from "./TopologyGraph";
 import Configuration from "./Configuration";
+import VisualConfig from "./VisualConfig";
 import { Route, NavLink, HashRouter } from "react-router-dom";
 import styles from "./grid.module.css";
 import TimelineIcon from "@material-ui/icons/Timeline";
@@ -19,6 +20,7 @@ const Content = (loaded) => {
       <Route exact path="/" component={TopologyGraph} />
       <Route exact path="/graph" component={TopologyGraph} />
       <Route path="/config" component={Configuration} />
+      <Route path="/visual-config" component={VisualConfig} />
     </div>
   );
 };
@@ -46,6 +48,12 @@ const App = () => {
             </NavLink>
             <NavLink to="/config">
               <SettingsIcon className={styles.sidebarIcon} />
+            </NavLink>
+            <NavLink to="/visual-config">
+              <SettingsIcon
+                className={styles.sidebarIcon}
+                style={{ color: "red" }}
+              />
             </NavLink>
           </div>
           <div className={styles.bottomIcons}>
