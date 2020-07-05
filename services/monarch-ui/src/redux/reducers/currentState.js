@@ -18,10 +18,10 @@ function cmp(extractor) {
   };
 }
 
-const sortConsumerGroups = (cgs) => {
+const sortConsumerGroups = (cgs, existingTopics) => {
   return cgs
     .sort(cmp((c) => c.name))
-    .map((c) => ({ ...c, topics: c.topics.sort(cmp((t) => t.name)) }));
+    .map((c) => ({ ...c, topics: c.topics.filter((t) => existingTopics.has(t.name)).sort(cmp((t) => t.name)) }))
 };
 
 function toScaleFn(rates) {
@@ -76,17 +76,19 @@ function cgInfo(cgs, topicRates, serviceName) {
 export default function (state = initialState, action) {
   switch (action.type) {
     case REFRESH_STATE: {
+      const existingTopics = new Set(action.payload.topics.map((t) => t.name))
+      const existingServices = new Set(action.payload.services.map((s) => s.name))
       const newConf = {
         topics: action.payload.topics.sort(cmp((t) => t.name)),
-        consumerGroups: sortConsumerGroups(action.payload.consumerGroups),
+        consumerGroups: sortConsumerGroups(action.payload.consumerGroups, existingTopics),
         services: action.payload.services.sort(cmp((s) => s.name)).map((s) => ({
           ...s,
-          consumerGroups: sortConsumerGroups(s.consumerGroups),
+          requestsFrom: s.requestsFrom.filter((st) => existingServices.has(st)),
+          consumerGroups: sortConsumerGroups(s.consumerGroups, existingTopics),
         })),
       };
       const topicRates = mapToTopicRates(newConf.topics);
       const consumerGroupInfo = [
-        ...newConf.consumerGroups.map((cg) => cgInfo(cg, topicRates)),
         ...newConf.services.flatMap((s) =>
           cgInfo(s.consumerGroups, topicRates, s.name)
         ),
