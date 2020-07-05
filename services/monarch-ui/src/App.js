@@ -24,16 +24,16 @@ const Content = (loaded) => {
 };
 
 export default () => {
-  const loaded = useSelector((state) => state.config.loaded);
-  const loadedBe = useSelector((state) => state.backendConfig.loaded);
+  const stateLoaded = useSelector((state) => state.currentState.loaded);
+  const configLoaded = useSelector((state) => state.config.loaded);
   const dispatch = useDispatch();
-  const { update, updateBe } = actions(dispatch);
+  const { refreshState, updateConfig } = actions(dispatch);
 
-  if (!loaded) {
-    schedule("update", 15000, update);
+  if (!stateLoaded) {
+    schedule("update", 15000, refreshState);
   }
-  if (!loadedBe) {
-    updateBe();
+  if (!configLoaded) {
+    updateConfig();
   }
 
   return (
@@ -50,12 +50,12 @@ export default () => {
           </div>
           <div className={styles.bottomIcons}>
             <RefreshIcon
-              onClick={() => update()}
+              onClick={() => refreshState()}
               className={styles.sidebarIcon}
             />
           </div>
         </div>
-        {Content(loaded && loadedBe)}
+        {Content(stateLoaded && configLoaded)}
       </div>
     </HashRouter>
   );

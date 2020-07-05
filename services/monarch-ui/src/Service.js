@@ -36,10 +36,10 @@ function formatMetrics(metrics) {
 
 export default ({ name }) => {
   const service = useSelector((state) =>
-    state.config.config.services.find((s) => s.name === name)
+    state.currentState.config.services.find((s) => s.name === name)
   );
   const consumerGroupInfo = useSelector((state) =>
-    state.config.consumerGroupInfo.filter((cg) => name === cg.serviceName)
+    state.currentState.consumerGroupInfo.filter((cg) => name === cg.serviceName)
   );
   const critical = consumerGroupInfo.filter(
     (cg) => cg.performance === "CRITICAL"

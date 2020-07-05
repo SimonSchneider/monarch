@@ -9,17 +9,17 @@ import actions from "./requests";
 import styles from "./grid.module.css";
 
 export default () => {
-  const config = useSelector((state) => state.backendConfig.config);
+  const config = useSelector((state) => state.config.config);
   const dispatch = useDispatch();
-  const { update, updateBe, newConfig } = actions(dispatch);
+  const { refreshState, updateConfig, newConfig } = actions(dispatch);
   const [localConfig, setLocalConfig] = useState(config);
   return (
     <div className={gridStyles.content} style={{ overflow: "justified" }}>
       <div className={styles.sidebar}>
         <ClearIcon
           onClick={() => {
-            update();
-            updateBe();
+            refreshState();
+            updateConfig();
           }}
           className={styles.sidebarIcon}
         />

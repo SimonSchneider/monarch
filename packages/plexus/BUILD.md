@@ -22,7 +22,7 @@ The pre-step, which they all require, is to bundle `./src/LayoutManager/layout.w
 
 ## Babel
 
-Babel is used to transpile the TypeScript for all scenarios and the pre-step. See `babel.config.js` for specifics.
+Babel is used to transpile the TypeScript for all scenarios and the pre-step. See `babel.currentState.js` for specifics.
 
 The production ES module build is not bundled and therefore does not use Webpack.
 

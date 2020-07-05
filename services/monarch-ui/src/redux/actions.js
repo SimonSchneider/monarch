@@ -1,9 +1,18 @@
 import {
+  REFRESH_STATE,
+  REFRESHING_STATE,
   LOAD_CONFIG,
   LOADING_CONFIG,
-  LOAD_BACKEND_CONFIG,
-  LOADING_BACKEND_CONFIG,
 } from "./actionTypes";
+
+export const refreshState = (currentState) => ({
+  type: REFRESH_STATE,
+  payload: currentState,
+});
+
+export const refreshingState = () => ({
+  type: REFRESHING_STATE,
+});
 
 export const loadConfig = (config) => ({
   type: LOAD_CONFIG,
@@ -12,13 +21,4 @@ export const loadConfig = (config) => ({
 
 export const loadingConfig = () => ({
   type: LOADING_CONFIG,
-});
-
-export const loadBackendConfig = (backendConfig) => ({
-  type: LOAD_BACKEND_CONFIG,
-  payload: backendConfig,
-});
-
-export const loadingBackendConfig = () => ({
-  type: LOADING_BACKEND_CONFIG,
 });

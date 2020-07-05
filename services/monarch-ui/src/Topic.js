@@ -5,7 +5,7 @@ import styles from "./arch.module.css";
 
 export default ({ name } = {}) => {
   const { eventRate } = useSelector((state) =>
-    state.config.config.topics.find((t) => t.name === name)
+    state.currentState.config.topics.find((t) => t.name === name)
   );
   return (
     <div className={styles.topic}>

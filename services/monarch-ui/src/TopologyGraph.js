@@ -40,11 +40,11 @@ const lm = new LayoutManager({
 });
 
 export default () => {
-  const conf = useSelector((state) => state.config.config);
-  const weights = useSelector((state) => state.config.weights);
-  const topicRates = useSelector((state) => state.config.topicRates);
+  const conf = useSelector((state) => state.currentState.config);
+  const weights = useSelector((state) => state.currentState.weights);
+  const topicRates = useSelector((state) => state.currentState.topicRates);
   const consumerGroupInfo = useSelector(
-    (state) => state.config.consumerGroupInfo
+    (state) => state.currentState.consumerGroupInfo
   );
 
   const topics = conf.topics.map((t) => ({

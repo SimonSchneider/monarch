@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
+import currentState from "./currentState";
 import config from "./config";
-import backendConfig from "./backendConfig";
 
-export default combineReducers({ config, backendConfig });
+export default combineReducers({ currentState: currentState, config: config });

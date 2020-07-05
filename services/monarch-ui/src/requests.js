@@ -1,27 +1,27 @@
 import {
+  refreshState,
   loadConfig,
-  loadBackendConfig,
-  loadingBackendConfig,
+  loadingConfig,
 } from "./redux/actions";
 
-const update = (dispatch) => {
+const updateState = (dispatch) => {
   return async () => {
-    const fromBe = await fetch(`/api/v1/curr`).then((r) => r.json());
+    const currentState = await fetch(`/api/v1/curr`).then((r) => r.json());
+    dispatch(refreshState(currentState));
+  };
+};
+
+const updateConfig = (dispatch) => {
+  return async () => {
+    dispatch(loadingConfig());
+    const fromBe = await fetch(`/api/v1/configurations`).then((r) => r.json());
     dispatch(loadConfig(fromBe));
   };
 };
 
-const updateBe = (dispatch) => {
-  return async () => {
-    dispatch(loadingBackendConfig());
-    const fromBe = await fetch(`/api/v1/configurations`).then((r) => r.json());
-    dispatch(loadBackendConfig(fromBe));
-  };
-};
-
 export default (dispatch) => ({
-  update: update(dispatch),
-  updateBe: updateBe(dispatch),
+  refreshState: updateState(dispatch),
+  updateConfig: updateConfig(dispatch),
   newConfig: async (config) => {
     if (!config) {
       return;
@@ -31,7 +31,7 @@ export default (dispatch) => ({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(config),
     });
-    update(dispatch)();
-    updateBe(dispatch)();
+    updateState(dispatch)();
+    updateConfig(dispatch)();
   },
 });
