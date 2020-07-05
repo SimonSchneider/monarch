@@ -40,31 +40,31 @@ const lm = new LayoutManager({
 });
 
 export default () => {
-  const conf = useSelector((state) => state.currentState.config);
+  const currentState = useSelector((state) => state.currentState.config);
   const weights = useSelector((state) => state.currentState.weights);
   const topicRates = useSelector((state) => state.currentState.topicRates);
   const consumerGroupInfo = useSelector(
     (state) => state.currentState.consumerGroupInfo
   );
 
-  const topics = conf.topics.map((t) => ({
+  const topics = currentState.topics.map((t) => ({
     key: `topic.${t.name}`,
     component: <Topic name={t.name} />,
   }));
-  const services = conf.services.map((s) => ({
+  const services = currentState.services.map((s) => ({
     key: `service.${s.name}`,
     component: <Service name={s.name} />,
   }));
   const vertices = [...topics, ...services];
 
-  const producers = conf.services.flatMap((s) =>
+  const producers = currentState.services.flatMap((s) =>
     s.producesTo.map((t) => ({
       from: `service.${s.name}`,
       to: `topic.${t}`,
       topic: t,
     }))
   );
-  const consumers = conf.services.flatMap((s) =>
+  const consumers = currentState.services.flatMap((s) =>
     s.consumerGroups.flatMap((cg) =>
       cg.topics.map((t) => ({
         from: `topic.${t.name}`,
@@ -74,7 +74,7 @@ export default () => {
       }))
     )
   );
-  const requests = conf.services.flatMap((ss) =>
+  const requests = currentState.services.flatMap((ss) =>
     ss.requestsFrom.flatMap((st) => ({
       from: `service.${ss.name}`,
       to: `service.${st}`,
